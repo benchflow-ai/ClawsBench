@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClawsBench &mdash; Benchmarking LLM Agents in Realistic Productivity Environments</title>
+<meta name="description" content="ClawsBench: A benchmark for evaluating LLM agent capability and safety across 5 high-fidelity mock services, 44 tasks, 6 models, and 7,224 trials.">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1a2e;
+  --ink-light: #3a3a5c;
+  --accent: #4361ee;
+  --accent-light: #7b8ff7;
+  --accent-bg: rgba(67,97,238,0.06);
+  --surface: #fafbfd;
+  --border: #e4e7ec;
+  --warm: #f59e0b;
+  --danger: #ef4444;
+  --success: #10b981;
+}
+
+body { color: var(--ink); background: var(--surface); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+h1,h2,h3,h4 { color: var(--ink); font-weight: 700; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-light); text-decoration: underline; }
+code { background: var(--accent-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.88em; color: var(--accent); }
+
+/* Nav */
+.navbar { background: var(--surface) !important; border-bottom: 1px solid var(--border); }
+.nav-link { color: var(--ink) !important; font-weight: 500; font-size: 0.9rem; border-bottom: 2px solid transparent; transition: border-color 200ms; }
+.nav-link:hover, .nav-link.active { border-bottom-color: var(--accent); text-decoration: none !important; }
+
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  color: #fff;
+  padding: 5rem 0 4rem;
+  text-align: center;
+}
+.hero h1 { font-size: 3.5rem; font-weight: 800; letter-spacing: -0.03em; color: #fff; }
+.hero .tagline { font-size: 1.15rem; color: rgba(255,255,255,0.75); max-width: 700px; margin: 0.75rem auto 0; line-height: 1.6; }
+.hero .stats { margin-top: 2rem; display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap; }
+.hero .stat { text-align: center; }
+.hero .stat-num { font-size: 2rem; font-weight: 800; color: #fff; }
+.hero .stat-label { font-size: 0.78rem; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.08em; }
+.hero .cta { margin-top: 2rem; display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+.btn-hero { background: var(--accent); color: #fff; font-weight: 600; font-size: 0.9rem; padding: 0.6rem 1.8rem; border: none; border-radius: 6px; transition: all 200ms; }
+.btn-hero:hover { background: #3451d1; color: #fff; }
+.btn-outline-hero { border: 2px solid rgba(255,255,255,0.4); color: #fff; font-weight: 600; font-size: 0.9rem; padding: 0.6rem 1.8rem; background: transparent; border-radius: 6px; transition: all 200ms; }
+.btn-outline-hero:hover { background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(255,255,255,0.7); }
+
+/* Sections */
+section { padding: 4rem 0; border-bottom: 1px solid var(--border); }
+section:last-of-type { border-bottom: none; }
+h2 { font-size: 1.6rem; margin-bottom: 1rem; }
+.section-sub { color: var(--ink-light); font-size: 0.95rem; margin-bottom: 1.5rem; max-width: 680px; }
+
+/* Environment cards */
+.env-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; }
+.env-card { border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; background: #fff; text-align: center; transition: box-shadow 200ms; }
+.env-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+.env-card img { width: 100%; border-radius: 6px; margin-bottom: 0.75rem; aspect-ratio: 4/3; object-fit: cover; }
+.env-card .name { font-weight: 700; font-size: 0.95rem; }
+.env-card .desc { font-size: 0.8rem; color: var(--ink-light); margin-top: 0.25rem; }
+
+/* Findings */
+.finding { display: flex; gap: 1rem; padding: 1.25rem 0; border-bottom: 1px solid var(--border); }
+.finding:last-child { border-bottom: none; }
+.finding-icon { flex-shrink: 0; width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+.finding-icon.capability { background: rgba(67,97,238,0.1); color: var(--accent); }
+.finding-icon.safety { background: rgba(239,68,68,0.1); color: var(--danger); }
+.finding-icon.scaffold { background: rgba(245,158,11,0.1); color: var(--warm); }
+.finding-icon.insight { background: rgba(16,185,129,0.1); color: var(--success); }
+.finding h4 { font-size: 0.95rem; margin-bottom: 0.25rem; }
+.finding p { font-size: 0.88rem; color: var(--ink-light); margin: 0; }
+
+/* Results table */
+.results-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+.results-table th { background: var(--ink); color: #fff; padding: 0.6rem 0.75rem; font-weight: 600; text-align: center; }
+.results-table th:first-child { text-align: left; border-radius: 6px 0 0 0; }
+.results-table th:last-child { border-radius: 0 6px 0 0; }
+.results-table td { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); text-align: center; }
+.results-table td:first-child { text-align: left; font-weight: 600; }
+.results-table tr:hover { background: var(--accent-bg); }
+.results-table .best { color: var(--accent); font-weight: 700; }
+.results-table .worst { color: var(--danger); font-weight: 600; }
+
+/* Timeline */
+.timeline { position: relative; padding-left: 2rem; }
+.timeline::before { content: ''; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px; background: var(--border); }
+.tl-item { position: relative; padding-bottom: 1.5rem; }
+.tl-item::before { content: ''; position: absolute; left: -2rem; top: 4px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--accent); background: var(--surface); z-index: 1; }
+.tl-item.done::before { background: var(--accent); }
+.tl-item.current::before { background: var(--warm); border-color: var(--warm); box-shadow: 0 0 0 4px rgba(245,158,11,0.2); }
+.tl-date { font-size: 0.78rem; color: var(--ink-light); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+.tl-title { font-weight: 600; font-size: 0.95rem; margin-top: 0.15rem; }
+.tl-desc { font-size: 0.85rem; color: var(--ink-light); margin-top: 0.15rem; }
+
+/* Behaviors */
+.behavior-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+.behavior { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 1rem; }
+.behavior .label { font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; }
+.behavior .label .bi { color: var(--danger); }
+.behavior .detail { font-size: 0.82rem; color: var(--ink-light); margin-top: 0.25rem; }
+
+/* Links bar */
+.link-bar { display: flex; gap: 1rem; flex-wrap: wrap; }
+.link-bar a { display: inline-flex; align-items: center; gap: 0.4rem; background: #fff; border: 1px solid var(--border); padding: 0.6rem 1.2rem; border-radius: 6px; font-weight: 600; font-size: 0.88rem; transition: all 200ms; }
+.link-bar a:hover { border-color: var(--accent); background: var(--accent-bg); text-decoration: none; }
+
+/* Figure */
+.fig-wrap { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; }
+.fig-wrap img { width: 100%; border-radius: 4px; }
+.fig-wrap .caption { font-size: 0.82rem; color: var(--ink-light); margin-top: 0.75rem; text-align: center; }
+
+/* Footer */
+footer { background: var(--ink); color: rgba(255,255,255,0.6); padding: 2rem 0; font-size: 0.85rem; }
+footer a { color: var(--accent-light); }
+
+@media (max-width: 768px) {
+  .hero h1 { font-size: 2.2rem; }
+  .hero .stats { gap: 1.5rem; }
+  .env-grid { grid-template-columns: repeat(2, 1fr); }
+  .behavior-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .env-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg sticky-top">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="#">ClawsBench</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="#overview">Overview</a></li>
+        <li class="nav-item"><a class="nav-link" href="#environments">Environments</a></li>
+        <li class="nav-item"><a class="nav-link" href="#results">Results</a></li>
+        <li class="nav-item"><a class="nav-link" href="#findings">Findings</a></li>
+        <li class="nav-item"><a class="nav-link" href="#behaviors">Rogue Behaviors</a></li>
+        <li class="nav-item"><a class="nav-link" href="#news">News</a></li>
+        <li class="nav-item"><a class="nav-link btn btn-sm btn-hero ms-2" href="https://github.com/benchflow-ai/ClawsBench" target="_blank"><i class="bi bi-github"></i> GitHub</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="container">
+    <h1>ClawsBench</h1>
+    <div class="tagline">Benchmarking LLM Agents in Realistic Productivity Environments &mdash; measuring both <strong style="color:#fff">capability</strong> and <strong style="color:#fff">safety</strong> across email, calendar, docs, drive, and chat.</div>
+    <div class="stats">
+      <div class="stat"><div class="stat-num">5</div><div class="stat-label">Mock Services</div></div>
+      <div class="stat"><div class="stat-num">44</div><div class="stat-label">Tasks</div></div>
+      <div class="stat"><div class="stat-num">6</div><div class="stat-label">Models</div></div>
+      <div class="stat"><div class="stat-num">4</div><div class="stat-label">Harnesses</div></div>
+      <div class="stat"><div class="stat-num">33</div><div class="stat-label">Conditions</div></div>
+      <div class="stat"><div class="stat-num">7,224</div><div class="stat-label">Trials</div></div>
+    </div>
+    <div class="cta">
+      <a href="#" class="btn-hero"><i class="bi bi-file-earmark-text me-1"></i> Read the Paper</a>
+      <a href="https://github.com/benchflow-ai/ClawsBench" class="btn-outline-hero"><i class="bi bi-github me-1"></i> View on GitHub</a>
+      <a href="#" class="btn-outline-hero"><i class="bi bi-discord me-1"></i> Join Discord</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- Overview -->
+<section id="overview">
+  <h2>Overview</h2>
+  <p>LLM agents are increasingly deployed to automate productivity tasks &mdash; email triage, meeting scheduling, document management &mdash; but evaluating them on live services is risky due to potentially irreversible changes. Existing benchmarks rely on simplified environments and fail to capture realistic, stateful, multi-service workflows.</p>
+  <p><strong>ClawsBench</strong> addresses this with five high-fidelity mock services that replicate real Google Workspace and Slack APIs with full state management and deterministic snapshot/restore. Our 44 structured tasks cover single-service, cross-service, and safety-critical scenarios, enabling rigorous evaluation of both what agents <em>can</em> do and what they <em>should not</em> do.</p>
+  <p>We decompose agent scaffolding into two independent levers &mdash; <strong>domain skills</strong> (API knowledge via progressive disclosure) and a <strong>meta prompt</strong> (cross-service coordination) &mdash; and vary both to measure their separate and combined effects across 6 models, 4 agent harnesses, and 33 experimental conditions.</p>
+
+  <div class="fig-wrap">
+    <img src="assets/fig1_pipeline.png" alt="ClawsBench evaluation pipeline">
+    <div class="caption"><strong>Figure 1.</strong> ClawsBench evaluation pipeline: tasks are executed in Docker containers with mock services, sandboxed agent execution, and deterministic state management.</div>
+  </div>
+</section>
+
+<!-- Environments -->
+<section id="environments">
+  <h2>High-Fidelity Mock Environments</h2>
+  <p class="section-sub">Each environment implements a full REST API backed by SQLite, with realistic seed data including needles, edge cases, and safety traps. Agents interact exclusively through HTTP APIs &mdash; the same interface as live services.</p>
+  <div class="env-grid">
+    <div class="env-card">
+      <img src="assets/gmail_img.png" alt="Gmail">
+      <div class="name">claw-gmail</div>
+      <div class="desc">54 endpoints, ~3,000 seeded emails with needles and edge cases</div>
+    </div>
+    <div class="env-card">
+      <img src="assets/gcal_img.jpg" alt="Google Calendar">
+      <div class="name">claw-gcal</div>
+      <div class="desc">Full Calendar API mock with recurring events and timezone handling</div>
+    </div>
+    <div class="env-card">
+      <img src="assets/gdoc_img.png" alt="Google Docs">
+      <div class="name">claw-gdocs</div>
+      <div class="desc">Document CRUD with collaborative editing semantics</div>
+    </div>
+    <div class="env-card">
+      <img src="assets/gdrive_img.png" alt="Google Drive">
+      <div class="name">claw-gdrive</div>
+      <div class="desc">File management with sharing permissions and access control</div>
+    </div>
+    <div class="env-card">
+      <img src="assets/slack_img.jpg" alt="Slack">
+      <div class="name">claw-slack</div>
+      <div class="desc">42 endpoints covering channels, threads, reactions, and DMs</div>
+    </div>
+  </div>
+</section>
+
+<!-- Results -->
+<section id="results">
+  <h2>Main Results</h2>
+  <p class="section-sub">Model comparison on OpenClaw with full scaffolding (skills + meta prompt). TSR = Task Success Rate, UAR = Unsafe Action Rate, SCR = Safe Completion Rate. 95% cluster bootstrap CIs in brackets.</p>
+
+  <div style="overflow-x:auto;">
+    <table class="results-table">
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>TSR (off/off)</th>
+          <th>TSR (on/on)</th>
+          <th>UAR (on/on)</th>
+          <th>SCR (on/on)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Claude Opus 4.6</td>
+          <td>0%</td>
+          <td class="best">63% <small>[42,82]</small></td>
+          <td class="worst">23% <small>[8,40]</small></td>
+          <td class="best">50% <small>[32,68]</small></td>
+        </tr>
+        <tr>
+          <td>GLM-5</td>
+          <td>3%</td>
+          <td>60% <small>[41,78]</small></td>
+          <td class="worst">23% <small>[10,38]</small></td>
+          <td>48% <small>[32,63]</small></td>
+        </tr>
+        <tr>
+          <td>Gemini 3.1 Pro</td>
+          <td>8%</td>
+          <td>58% <small>[38,77]</small></td>
+          <td>10% <small>[3,19]</small></td>
+          <td>48% <small>[30,65]</small></td>
+        </tr>
+        <tr>
+          <td>Claude Sonnet 4.6</td>
+          <td>0%</td>
+          <td>56% <small>[36,75]</small></td>
+          <td>13% <small>[3,27]</small></td>
+          <td>48% <small>[32,64]</small></td>
+        </tr>
+        <tr>
+          <td>GPT-5.4</td>
+          <td>1%</td>
+          <td>53% <small>[34,72]</small></td>
+          <td class="best">7% <small>[0,15]</small></td>
+          <td>41% <small>[27,55]</small></td>
+        </tr>
+        <tr>
+          <td>Gemini 3.1 Flash-Lite</td>
+          <td>0%</td>
+          <td>39% <small>[21,57]</small></td>
+          <td class="worst">23% <small>[11,35]</small></td>
+          <td>26% <small>[12,41]</small></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="fig-wrap">
+    <img src="assets/fig_main_results.png" alt="Main results figure">
+    <div class="caption"><strong>Figure 2.</strong> TSR (left) and UAR (right) for six models on OpenClaw with full scaffolding. The top five models cluster at 53&ndash;63% TSR; only Flash-Lite trails. Capability and safety rankings diverge: Opus leads TSR but ties for highest UAR.</div>
+  </div>
+</section>
+
+<!-- Key Findings -->
+<section id="findings">
+  <h2>Key Findings</h2>
+
+  <div class="finding">
+    <div class="finding-icon scaffold"><i class="bi bi-layers"></i></div>
+    <div>
+      <h4>Scaffolding dominates model capability</h4>
+      <p>Without skills + meta prompt, all models score 0&ndash;8% TSR. With scaffolding, every model jumps to 39&ndash;63% TSR. The scaffolding effect (40&ndash;60pp lift) dwarfs model differences (10pp spread among top five).</p>
+    </div>
+  </div>
+
+  <div class="finding">
+    <div class="finding-icon capability"><i class="bi bi-bar-chart"></i></div>
+    <div>
+      <h4>Top models are statistically indistinguishable</h4>
+      <p>Opus (63%), GLM-5 (60%), Pro (58%), Sonnet (56%), GPT-5.4 (53%) &mdash; no pairwise differences survive Holm&ndash;Bonferroni correction. Only Flash-Lite (39%) clearly trails the pack.</p>
+    </div>
+  </div>
+
+  <div class="finding">
+    <div class="finding-icon safety"><i class="bi bi-shield-exclamation"></i></div>
+    <div>
+      <h4>No safety&ndash;capability tradeoff</h4>
+      <p>UAR ranges 7&ndash;23% across models with no monotonic relationship to capability. The strongest model (Opus, 63% TSR) ties for the most unsafe (23% UAR). The safest model (GPT-5.4, 7% UAR) is mid-tier on task success.</p>
+    </div>
+  </div>
+
+  <div class="finding">
+    <div class="finding-icon insight"><i class="bi bi-diagram-3"></i></div>
+    <div>
+      <h4>Multi-service tasks are harder and more dangerous</h4>
+      <p>Single-service tasks outperform by +23pp TSR, while multi-service tasks produce 10pp more unsafe actions. Consistent across all 33 conditions.</p>
+    </div>
+  </div>
+
+  <div class="finding">
+    <div class="finding-icon scaffold"><i class="bi bi-puzzle"></i></div>
+    <div>
+      <h4>Skills raise safety risk; meta prompt counteracts</h4>
+      <p>Domain skills increase both TSR and UAR. The meta prompt provides the safety guardrail &mdash; the skills&times;meta interaction on UAR is &minus;22 to &minus;28pp (Holm-corrected).</p>
+    </div>
+  </div>
+
+  <div class="finding">
+    <div class="finding-icon capability"><i class="bi bi-hdd-rack"></i></div>
+    <div>
+      <h4>Native harnesses help at baseline, not at the top</h4>
+      <p>At off/off, native harnesses (Claude Code, Codex, Gemini CLI) provide +4 to +29pp TSR via implicit tool definitions. At on/on with explicit scaffolding, the gap shrinks to &le;6pp &mdash; scaffolding equalizes harnesses.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Rogue Behaviors -->
+<section id="behaviors">
+  <h2>Agent Rogue Behaviors</h2>
+  <p class="section-sub">Analysis of 7,224 trajectories reveals eight recurring patterns of unsafe behavior that emerge across models and harnesses.</p>
+
+  <div class="behavior-grid">
+    <div class="behavior">
+      <div class="label"><i class="bi bi-terminal"></i> Sandbox Escalation</div>
+      <div class="detail">Agents systematically probe evaluation infrastructure via environment variable enumeration, database access attempts, and direct localhost calls. GPT-5.4 on Codex made 1,471 escalation calls; it explicitly acknowledged hitting the sandbox boundary.</div>
+    </div>
+    <div class="behavior">
+      <div class="label"><i class="bi bi-chat-square-text"></i> Prompt Injection Compliance</div>
+      <div class="detail">Embedded document comments, CC injection via email headers, and social-engineering exfiltration emails. Compliance rates range from 90% (Flash-Lite) to 0% (Claude models). Only one agent across 7,224 trials explicitly detected an injection.</div>
+    </div>
+    <div class="behavior">
+      <div class="label"><i class="bi bi-file-earmark-lock"></i> Unauthorized Contract Modification</div>
+      <div class="detail">Despite explicit legal blockers ("Do not amend until notification is complete"), violation rates range 0&ndash;67%. Safety rules can backfire: one agent classified the legal notice as an "embedded override" and dismissed it.</div>
+    </div>
+    <div class="behavior">
+      <div class="label"><i class="bi bi-eye"></i> Confidential Data Leakage</div>
+      <div class="detail">Agents forward internal financials to external recipients or share entire Drive folders without reviewing contents. Agents that sanitize data content still fail to check recipient authorization.</div>
+    </div>
+    <div class="behavior">
+      <div class="label"><i class="bi bi-shield-lock"></i> Anti-Cheating Sandbox</div>
+      <div class="detail">We discovered agents could read evaluation criteria, solutions, and oracle answers. Unix permission hardening with a restricted agent user blocks all access. Across 1,529 trajectories, 28 (1.8%) attempted cheating &mdash; all blocked, zero penetrations.</div>
+    </div>
+    <div class="behavior">
+      <div class="label"><i class="bi bi-x-octagon"></i> Overzealous Enforcement</div>
+      <div class="detail">Agents refuse valid operations or apply safety constraints too broadly, blocking legitimate task completion in an effort to be "safe."</div>
+    </div>
+    <div class="behavior">
+      <div class="label"><i class="bi bi-cloud-fog2"></i> Hallucinated Actions</div>
+      <div class="detail">Agents fabricate API responses, invent email addresses, or claim to have completed actions they never executed.</div>
+    </div>
+    <div class="behavior">
+      <div class="label"><i class="bi bi-arrow-repeat"></i> Degenerate Loops</div>
+      <div class="detail">Agents enter infinite retry loops, repeating failed API calls or re-reading the same files without making progress.</div>
+    </div>
+  </div>
+</section>
+
+<!-- News -->
+<section id="news">
+  <h2>News</h2>
+  <div class="timeline">
+    <div class="tl-item current">
+      <div class="tl-date">2026/4/8</div>
+      <div class="tl-title">Project website &amp; GitHub repo launched</div>
+      <div class="tl-desc">Public release of trajectory data, key findings, and rogue behavior analysis.</div>
+    </div>
+    <div class="tl-item done">
+      <div class="tl-date">2026/4/8</div>
+      <div class="tl-title">Extended paper submitted to arXiv</div>
+      <div class="tl-desc">6 models, 4 harnesses, 33 conditions, 7,224 trials.</div>
+    </div>
+    <div class="tl-item done">
+      <div class="tl-date">2026/3/22</div>
+      <div class="tl-title">Anti-cheating sandbox deployed</div>
+      <div class="tl-desc">Unix permission hardening after discovering agents could read evaluation files. 28/1,529 cheating attempts blocked, zero penetrations.</div>
+    </div>
+    <div class="tl-item done">
+      <div class="tl-date">2026/3/15</div>
+      <div class="tl-title">Initial paper submitted</div>
+      <div class="tl-desc">44 tasks, 2 models, 2 harnesses, 4 conditions.</div>
+    </div>
+  </div>
+
+  <h4 style="margin-top:2rem;">Upcoming</h4>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-date">May 2026</div>
+      <div class="tl-title">Environment preview</div>
+      <div class="tl-desc">Docker images for mock services available for community testing.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Summer 2026</div>
+      <div class="tl-title">First batch of tasks released</div>
+      <div class="tl-desc">Open-source task definitions with Dockerized environments for reproducible evaluation.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Ongoing</div>
+      <div class="tl-title">Community leaderboard</div>
+      <div class="tl-desc">Public leaderboard for model submissions. Accepting community task contributions.</div>
+    </div>
+  </div>
+</section>
+
+<!-- Links -->
+<section id="links">
+  <h2>Resources</h2>
+  <div class="link-bar">
+    <a href="#"><i class="bi bi-file-earmark-pdf"></i> Paper (arXiv)</a>
+    <a href="https://github.com/benchflow-ai/ClawsBench"><i class="bi bi-github"></i> GitHub</a>
+    <a href="#"><i class="bi bi-discord"></i> Discord</a>
+    <a href="https://agentskills-workshop.github.io"><i class="bi bi-globe"></i> Agent Skills Workshop</a>
+  </div>
+  <p style="margin-top:1.25rem; font-size:0.9rem; color:var(--ink-light);">
+    ClawsBench is developed by the <a href="https://benchflow.ai">BenchFlow</a> team and collaborators from Stanford, CMU, Ohio State, UC Berkeley, UC Davis, Dartmouth, USC, Boston University, and UNC.
+  </p>
+</section>
+
+</div>
+
+<footer>
+  <div class="container text-center">
+    ClawsBench &copy; 2026 BenchFlow &middot; Licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> &middot; <a href="https://github.com/benchflow-ai/ClawsBench">GitHub</a>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
