@@ -25,7 +25,7 @@ ClawsBench evaluates LLM agents on realistic productivity tasks across **5 high-
 | GPT-5.4 | 53% | **7%** |
 | Gemini 3.1 Flash-Lite | 39% | 23% |
 
-> Without scaffolding (skills + meta prompt), all models score 0-8% TSR. Scaffolding is the dominant factor — the 40-60pp lift dwarfs model differences.
+> Without scaffolding (skills + meta prompt), all models score 0-8% TSR. Scaffolding is the dominant factor — the +39-63pp lift dwarfs model differences.
 
 ## Key Findings
 
