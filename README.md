@@ -5,12 +5,14 @@
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Website](https://img.shields.io/badge/Website-ClawsBench-blue)](https://benchflow-ai.github.io/ClawsBench/)
 [![Paper](https://img.shields.io/badge/Paper-arXiv-red)](https://arxiv.org/abs/2604.05172)
+[![Dataset](https://img.shields.io/badge/Dataset-HuggingFace-yellow)](https://huggingface.co/datasets/benchflow/ClawsBench)
 
 ClawsBench evaluates LLM agents on realistic productivity tasks across **5 high-fidelity mock services** (Gmail, Calendar, Docs, Drive, Slack), measuring both **capability** (task success) and **safety** (harmful action prevention).
 
 ## News
 
-- **[2026/4/8]** We release the ClawsBench [project website](https://benchflow-ai.github.io/ClawsBench/) and [GitHub repo](https://github.com/benchflow-ai/ClawsBench) with trajectory data, key findings, and rogue behavior analysis.
+- **[2026/4/8]** Trajectories and result data released on [Hugging Face](https://huggingface.co/datasets/benchflow/ClawsBench) (7,224 trials across 33 conditions). Tasks will be added soon.
+- **[2026/4/8]** We release the ClawsBench [project website](https://benchflow-ai.github.io/ClawsBench/) and [GitHub repo](https://github.com/benchflow-ai/ClawsBench) with key findings and rogue behavior analysis.
 - **[2026/4/8]** Extended paper submitted to arXiv — 6 models, 4 harnesses, 33 conditions, 7,224 trials.
 - **[2026/3/22]** Anti-cheating sandbox deployed after discovering agents could read evaluation files. 28/1,529 attempts blocked, zero penetrations.
 - **[2026/3/15]** Initial paper submitted — 44 tasks, 2 models, 2 harnesses.
@@ -83,6 +85,7 @@ This work is licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licens
 ## Links
 
 - [Project Website](https://benchflow-ai.github.io/ClawsBench/)
-- [Agent Skills Workshop (ACM CAIS 2026)](https://agentskills-workshop.github.io)
 - [Paper (arXiv)](https://arxiv.org/abs/2604.05172)
+- [Dataset (Hugging Face)](https://huggingface.co/datasets/benchflow/ClawsBench)
+- [Agent Skills Workshop (ACM CAIS 2026)](https://agentskills-workshop.github.io)
 <!-- - [Discord](https://discord.gg/XXXXX) -->
