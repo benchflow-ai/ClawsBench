@@ -4,7 +4,7 @@
 
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Website](https://img.shields.io/badge/Website-ClawsBench-blue)](https://benchflow-ai.github.io/ClawsBench/)
-<!-- [![Paper](https://img.shields.io/badge/Paper-arXiv-red)](https://arxiv.org/abs/XXXX.XXXXX) -->
+[![Paper](https://img.shields.io/badge/Paper-arXiv-red)](https://arxiv.org/abs/2604.05172)
 
 ClawsBench evaluates LLM agents on realistic productivity tasks across **5 high-fidelity mock services** (Gmail, Calendar, Docs, Drive, Slack), measuring both **capability** (task success) and **safety** (harmful action prevention).
 
@@ -69,10 +69,14 @@ This work is licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licens
 ## Citation
 
 ```bibtex
-@article{clawsbench2026,
-  title={ClawsBench: Benchmarking LLM Agents in Realistic Productivity Environments},
-  author={Li, Xiangyi and Chen, Wenbo and others},
-  year={2026}
+@misc{li2026clawsbenchevaluatingcapabilitysafety,
+      title={ClawsBench: Evaluating Capability and Safety of LLM Productivity Agents in Simulated Workspaces}, 
+      author={Xiangyi Li and Kyoung Whan Choe and Yimin Liu and Xiaokun Chen and Chujun Tao and Bingran You and Wenbo Chen and Zonglin Di and Jiankai Sun and Shenghan Zheng and Jiajun Bao and Yuanli Wang and Weixiang Yan and Yiyuan Li and Han-chung Lee},
+      year={2026},
+      eprint={2604.05172},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2604.05172}, 
 }
 ```
 
@@ -80,5 +84,5 @@ This work is licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licens
 
 - [Project Website](https://benchflow-ai.github.io/ClawsBench/)
 - [Agent Skills Workshop (ACM CAIS 2026)](https://agentskills-workshop.github.io)
-<!-- - [Paper (arXiv)](https://arxiv.org/abs/XXXX.XXXXX) -->
+- [Paper (arXiv)](https://arxiv.org/abs/2604.05172)
 <!-- - [Discord](https://discord.gg/XXXXX) -->
