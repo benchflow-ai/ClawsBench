@@ -5,125 +5,145 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ClawsBench &mdash; Benchmarking LLM Agents in Realistic Productivity Environments</title>
 <meta name="description" content="ClawsBench: A benchmark for evaluating LLM agent capability and safety across 5 high-fidelity mock services, 44 tasks, 6 models, and 7,224 trials.">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet">
 <style>
+/* ── Design System ─────────────────────────────── */
 :root {
-  --ink: #1a1a2e;
-  --ink-light: #3a3a5c;
-  --accent: #4361ee;
-  --accent-light: #7b8ff7;
-  --accent-bg: rgba(67,97,238,0.06);
-  --surface: #fafbfd;
-  --border: #e4e7ec;
-  --warm: #f59e0b;
-  --danger: #ef4444;
-  --success: #10b981;
+  --foreground: #0a0a0a;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --background: #fafafa;
+  --card: #ffffff;
+  --accent: #3bb89e;
+  --accent-muted: rgba(59,184,158,0.1);
+  --danger: #d08050;
+  --danger-muted: rgba(208,128,80,0.1);
+  --radius: 0.625rem;
 }
 
-body { color: var(--ink); background: var(--surface); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-h1,h2,h3,h4 { color: var(--ink); font-weight: 700; }
-a { color: var(--accent); text-decoration: none; }
-a:hover { color: var(--accent-light); text-decoration: underline; }
-code { background: var(--accent-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.88em; color: var(--accent); }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif; color: var(--foreground); background: var(--background); -webkit-font-smoothing: antialiased; line-height: 1.6; }
+h1, h2, h3, h4 { font-family: 'Satoshi', sans-serif; font-weight: 700; color: var(--foreground); line-height: 1.25; }
+a { color: var(--foreground); text-decoration: underline; text-underline-offset: 2px; }
+a:hover { color: var(--muted); }
+code { font-family: 'Google Sans Code Variable', ui-monospace, monospace; font-size: 0.85em; background: var(--accent-muted); padding: 2px 6px; border-radius: 4px; }
 
-/* Nav */
-.navbar { background: var(--surface) !important; border-bottom: 1px solid var(--border); }
-.nav-link { color: var(--ink) !important; font-weight: 500; font-size: 0.9rem; border-bottom: 2px solid transparent; transition: border-color 200ms; }
-.nav-link:hover, .nav-link.active { border-bottom-color: var(--accent); text-decoration: none !important; }
+/* ── Container ─────────────────────────────────── */
+.container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
+.narrow { max-width: 720px; }
 
-/* Hero */
-.hero {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-  color: #fff;
-  padding: 5rem 0 4rem;
-  text-align: center;
-}
-.hero h1 { font-size: 3.5rem; font-weight: 800; letter-spacing: -0.03em; color: #fff; }
-.hero .tagline { font-size: 1.15rem; color: rgba(255,255,255,0.75); max-width: 700px; margin: 0.75rem auto 0; line-height: 1.6; }
-.hero .stats { margin-top: 2rem; display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap; }
-.hero .stat { text-align: center; }
-.hero .stat-num { font-size: 2rem; font-weight: 800; color: #fff; }
-.hero .stat-label { font-size: 0.78rem; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.08em; }
+/* ── Nav ───────────────────────────────────────── */
+nav { position: sticky; top: 0; z-index: 50; background: var(--background); border-bottom: 1px solid var(--border); backdrop-filter: blur(8px); }
+nav .inner { display: flex; align-items: center; justify-content: space-between; height: 3.5rem; }
+nav .logo { font-weight: 900; font-size: 1.05rem; text-decoration: none; color: var(--foreground); letter-spacing: -0.02em; }
+nav .links { display: flex; gap: 1.5rem; align-items: center; }
+nav .links a { font-size: 0.85rem; font-weight: 500; color: var(--muted); text-decoration: none; transition: color 150ms; }
+nav .links a:hover { color: var(--foreground); }
+nav .gh-btn { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.8rem; font-weight: 600; color: var(--foreground) !important; background: var(--card); border: 1px solid var(--border); padding: 0.3rem 0.8rem; border-radius: 6px; text-decoration: none; transition: border-color 150ms; }
+nav .gh-btn:hover { border-color: var(--foreground); }
+
+/* ── Hero ──────────────────────────────────────── */
+.hero { position: relative; min-height: 75vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 6rem 1.5rem 4rem; overflow: hidden; }
+.hero-grid { position: absolute; inset: 0; background-image:
+  linear-gradient(var(--border) 1px, transparent 1px),
+  linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 40px 40px; opacity: 0.5; }
+.hero-fade { position: absolute; inset: 0; background: radial-gradient(circle at center, transparent 30%, var(--background) 75%); }
+.hero-content { position: relative; z-index: 1; }
+.hero h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); font-weight: 900; letter-spacing: -0.04em; max-width: 800px; margin: 0 auto; }
+.hero .tagline { font-size: 1.1rem; color: var(--muted); max-width: 620px; margin: 1rem auto 0; font-weight: 400; }
 .hero .cta { margin-top: 2rem; display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
-.btn-hero { background: var(--accent); color: #fff; font-weight: 600; font-size: 0.9rem; padding: 0.6rem 1.8rem; border: none; border-radius: 6px; transition: all 200ms; }
-.btn-hero:hover { background: #3451d1; color: #fff; }
-.btn-outline-hero { border: 2px solid rgba(255,255,255,0.4); color: #fff; font-weight: 600; font-size: 0.9rem; padding: 0.6rem 1.8rem; background: transparent; border-radius: 6px; transition: all 200ms; }
-.btn-outline-hero:hover { background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(255,255,255,0.7); }
+.btn-primary { display: inline-flex; align-items: center; gap: 0.4rem; background: var(--foreground); color: var(--background); font-weight: 600; font-size: 0.88rem; padding: 0.55rem 1.5rem; border: 1px solid var(--foreground); border-radius: var(--radius); text-decoration: none; transition: opacity 150ms; }
+.btn-primary:hover { opacity: 0.85; color: var(--background); }
+.btn-secondary { display: inline-flex; align-items: center; gap: 0.4rem; background: var(--card); color: var(--foreground); font-weight: 600; font-size: 0.88rem; padding: 0.55rem 1.5rem; border: 1px solid var(--border); border-radius: var(--radius); text-decoration: none; transition: border-color 150ms, background 150ms; }
+.btn-secondary:hover { border-color: var(--foreground); background: var(--background); color: var(--foreground); }
 
-/* Sections */
-section { padding: 4rem 0; border-bottom: 1px solid var(--border); }
+/* ── Stat pills (hero) ─────────────────────────── */
+.stat-row { display: flex; justify-content: center; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap; }
+.stat-pill { background: var(--card); border: 1px solid var(--border); border-radius: 999px; padding: 0.4rem 1.1rem; display: flex; align-items: baseline; gap: 0.4rem; font-size: 0.82rem; }
+.stat-pill strong { font-weight: 700; font-size: 1rem; }
+.stat-pill span { color: var(--muted); font-weight: 400; }
+
+/* ── Sections ──────────────────────────────────── */
+section { padding: 5rem 0; border-bottom: 1px solid var(--border); }
 section:last-of-type { border-bottom: none; }
-h2 { font-size: 1.6rem; margin-bottom: 1rem; }
-.section-sub { color: var(--ink-light); font-size: 0.95rem; margin-bottom: 1.5rem; max-width: 680px; }
+.section-header { margin-bottom: 2rem; }
+.section-header h2 { font-size: 1.75rem; letter-spacing: -0.02em; }
+.section-header p { color: var(--muted); font-size: 0.95rem; margin-top: 0.5rem; max-width: 640px; }
 
-/* Environment cards */
+/* ── Environment cards ─────────────────────────── */
 .env-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; }
-.env-card { border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; background: #fff; text-align: center; transition: box-shadow 200ms; }
-.env-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
-.env-card img { width: 100%; border-radius: 6px; margin-bottom: 0.75rem; aspect-ratio: 4/3; object-fit: cover; }
-.env-card .name { font-weight: 700; font-size: 0.95rem; }
-.env-card .desc { font-size: 0.8rem; color: var(--ink-light); margin-top: 0.25rem; }
+.env-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: box-shadow 200ms; }
+.env-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+.env-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+.env-card .info { padding: 0.85rem; }
+.env-card .name { font-weight: 700; font-size: 0.9rem; }
+.env-card .desc { font-size: 0.78rem; color: var(--muted); margin-top: 0.2rem; line-height: 1.45; }
 
-/* Findings */
-.finding { display: flex; gap: 1rem; padding: 1.25rem 0; border-bottom: 1px solid var(--border); }
-.finding:last-child { border-bottom: none; }
-.finding-icon { flex-shrink: 0; width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
-.finding-icon.capability { background: rgba(67,97,238,0.1); color: var(--accent); }
-.finding-icon.safety { background: rgba(239,68,68,0.1); color: var(--danger); }
-.finding-icon.scaffold { background: rgba(245,158,11,0.1); color: var(--warm); }
-.finding-icon.insight { background: rgba(16,185,129,0.1); color: var(--success); }
-.finding h4 { font-size: 0.95rem; margin-bottom: 0.25rem; }
-.finding p { font-size: 0.88rem; color: var(--ink-light); margin: 0; }
+/* ── Leaderboard ───────────────────────────────── */
+.leaderboard { width: 100%; }
+.lb-header { display: grid; grid-template-columns: 180px 80px 1fr 80px 1fr 80px; gap: 0 0.5rem; padding: 0.6rem 0; border-bottom: 2px solid var(--foreground); font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.lb-row { display: grid; grid-template-columns: 180px 80px 1fr 80px 1fr 80px; gap: 0 0.5rem; padding: 0.7rem 0; border-bottom: 1px solid var(--border); align-items: center; font-size: 0.88rem; transition: background 150ms; }
+.lb-row:hover { background: rgba(0,0,0,0.015); }
+.lb-model { font-weight: 600; }
+.lb-val { font-variant-numeric: tabular-nums; font-weight: 500; text-align: right; font-size: 0.85rem; }
+.lb-ci { font-size: 0.7rem; color: var(--muted); font-weight: 400; }
+.lb-bar-wrap { position: relative; height: 20px; background: rgba(0,0,0,0.03); border-radius: 3px; overflow: hidden; }
+.lb-bar { height: 100%; border-radius: 3px; transition: width 400ms ease; }
+.bar-tsr { background: var(--accent); opacity: 0.7; }
+.bar-uar { background: var(--danger); opacity: 0.7; }
+.lb-scr { font-variant-numeric: tabular-nums; font-weight: 500; text-align: right; font-size: 0.85rem; }
 
-/* Results table */
-.results-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
-.results-table th { background: var(--ink); color: #fff; padding: 0.6rem 0.75rem; font-weight: 600; text-align: center; }
-.results-table th:first-child { text-align: left; border-radius: 6px 0 0 0; }
-.results-table th:last-child { border-radius: 0 6px 0 0; }
-.results-table td { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); text-align: center; }
-.results-table td:first-child { text-align: left; font-weight: 600; }
-.results-table tr:hover { background: var(--accent-bg); }
-.results-table .best { color: var(--accent); font-weight: 700; }
-.results-table .worst { color: var(--danger); font-weight: 600; }
+/* ── Findings ──────────────────────────────────── */
+.findings-list { list-style: none; }
+.findings-list li { padding: 1.25rem 0; border-bottom: 1px solid var(--border); }
+.findings-list li:last-child { border-bottom: none; }
+.findings-list h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.3rem; }
+.findings-list p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
 
-/* Timeline */
-.timeline { position: relative; padding-left: 2rem; }
-.timeline::before { content: ''; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px; background: var(--border); }
-.tl-item { position: relative; padding-bottom: 1.5rem; }
-.tl-item::before { content: ''; position: absolute; left: -2rem; top: 4px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--accent); background: var(--surface); z-index: 1; }
-.tl-item.done::before { background: var(--accent); }
-.tl-item.current::before { background: var(--warm); border-color: var(--warm); box-shadow: 0 0 0 4px rgba(245,158,11,0.2); }
-.tl-date { font-size: 0.78rem; color: var(--ink-light); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
-.tl-title { font-weight: 600; font-size: 0.95rem; margin-top: 0.15rem; }
-.tl-desc { font-size: 0.85rem; color: var(--ink-light); margin-top: 0.15rem; }
+/* ── Behavior cards ────────────────────────────── */
+.bh-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+.bh-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.1rem 1.25rem; }
+.bh-card h4 { font-size: 0.88rem; font-weight: 700; margin-bottom: 0.3rem; }
+.bh-card p { font-size: 0.82rem; color: var(--muted); line-height: 1.55; }
 
-/* Behaviors */
-.behavior-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
-.behavior { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 1rem; }
-.behavior .label { font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; }
-.behavior .label .bi { color: var(--danger); }
-.behavior .detail { font-size: 0.82rem; color: var(--ink-light); margin-top: 0.25rem; }
+/* ── News ──────────────────────────────────────── */
+.news-list { list-style: none; }
+.news-list li { display: flex; gap: 1rem; padding: 0.85rem 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+.news-list li:last-child { border-bottom: none; }
+.news-date { flex-shrink: 0; font-family: ui-monospace, monospace; font-size: 0.8rem; color: var(--muted); min-width: 80px; font-weight: 500; padding-top: 1px; }
+.news-text { line-height: 1.55; }
+.news-text strong { font-weight: 600; }
 
-/* Links bar */
-.link-bar { display: flex; gap: 1rem; flex-wrap: wrap; }
-.link-bar a { display: inline-flex; align-items: center; gap: 0.4rem; background: #fff; border: 1px solid var(--border); padding: 0.6rem 1.2rem; border-radius: 6px; font-weight: 600; font-size: 0.88rem; transition: all 200ms; }
-.link-bar a:hover { border-color: var(--accent); background: var(--accent-bg); text-decoration: none; }
+/* ── Figure ────────────────────────────────────── */
+.fig { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin: 2rem 0; }
+.fig img { width: 100%; border-radius: 4px; display: block; }
+.fig figcaption { font-size: 0.8rem; color: var(--muted); margin-top: 0.75rem; text-align: center; line-height: 1.5; }
 
-/* Figure */
-.fig-wrap { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; }
-.fig-wrap img { width: 100%; border-radius: 4px; }
-.fig-wrap .caption { font-size: 0.82rem; color: var(--ink-light); margin-top: 0.75rem; text-align: center; }
+/* ── Resources ─────────────────────────────────── */
+.res-grid { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.res-card { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--card); border: 1px solid var(--border); padding: 0.6rem 1.2rem; border-radius: var(--radius); font-weight: 600; font-size: 0.85rem; text-decoration: none; transition: border-color 150ms; }
+.res-card:hover { border-color: var(--foreground); }
+.res-card svg { width: 16px; height: 16px; }
 
-/* Footer */
-footer { background: var(--ink); color: rgba(255,255,255,0.6); padding: 2rem 0; font-size: 0.85rem; }
-footer a { color: var(--accent-light); }
+/* ── Footer ────────────────────────────────────── */
+footer { padding: 2.5rem 0; font-size: 0.82rem; color: var(--muted); text-align: center; border-top: 1px solid var(--border); }
+footer a { color: var(--muted); }
 
-@media (max-width: 768px) {
-  .hero h1 { font-size: 2.2rem; }
-  .hero .stats { gap: 1.5rem; }
+/* ── Responsive ────────────────────────────────── */
+@media (max-width: 900px) {
+  .env-grid { grid-template-columns: repeat(3, 1fr); }
+  .lb-header, .lb-row { grid-template-columns: 140px 60px 1fr 60px 1fr 60px; }
+}
+@media (max-width: 640px) {
+  .hero h1 { font-size: 2rem; }
   .env-grid { grid-template-columns: repeat(2, 1fr); }
-  .behavior-grid { grid-template-columns: 1fr; }
+  .bh-grid { grid-template-columns: 1fr; }
+  .stat-row { gap: 0.5rem; }
+  .stat-pill { font-size: 0.75rem; padding: 0.3rem 0.8rem; }
+  .lb-header, .lb-row { font-size: 0.78rem; grid-template-columns: 110px 50px 1fr 50px 1fr 50px; }
+  nav .links { gap: 0.75rem; }
+  nav .links a { font-size: 0.78rem; }
 }
 @media (max-width: 480px) {
   .env-grid { grid-template-columns: 1fr; }
@@ -132,40 +152,46 @@ footer a { color: var(--accent-light); }
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg sticky-top">
-  <div class="container">
-    <a class="navbar-brand fw-bold" href="#">ClawsBench</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav"><span class="navbar-toggler-icon"></span></button>
-    <div class="collapse navbar-collapse" id="nav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="#overview">Overview</a></li>
-        <li class="nav-item"><a class="nav-link" href="#environments">Environments</a></li>
-        <li class="nav-item"><a class="nav-link" href="#results">Results</a></li>
-        <li class="nav-item"><a class="nav-link" href="#findings">Findings</a></li>
-        <li class="nav-item"><a class="nav-link" href="#behaviors">Rogue Behaviors</a></li>
-        <li class="nav-item"><a class="nav-link" href="#news">News</a></li>
-        <li class="nav-item"><a class="nav-link btn btn-sm btn-hero ms-2" href="https://github.com/benchflow-ai/ClawsBench" target="_blank"><i class="bi bi-github"></i> GitHub</a></li>
-      </ul>
+<!-- Nav -->
+<nav>
+  <div class="container inner">
+    <a class="logo" href="#">ClawsBench</a>
+    <div class="links">
+      <a href="#overview">Overview</a>
+      <a href="#environments">Environments</a>
+      <a href="#results">Results</a>
+      <a href="#findings">Findings</a>
+      <a href="#behaviors">Behaviors</a>
+      <a href="#news">News</a>
+      <a class="gh-btn" href="https://github.com/benchflow-ai/ClawsBench" target="_blank">
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        GitHub
+      </a>
     </div>
   </div>
 </nav>
 
+<!-- Hero -->
 <div class="hero">
-  <div class="container">
-    <h1>ClawsBench</h1>
-    <div class="tagline">Benchmarking LLM Agents in Realistic Productivity Environments &mdash; measuring both <strong style="color:#fff">capability</strong> and <strong style="color:#fff">safety</strong> across email, calendar, docs, drive, and chat.</div>
-    <div class="stats">
-      <div class="stat"><div class="stat-num">5</div><div class="stat-label">Mock Services</div></div>
-      <div class="stat"><div class="stat-num">44</div><div class="stat-label">Tasks</div></div>
-      <div class="stat"><div class="stat-num">6</div><div class="stat-label">Models</div></div>
-      <div class="stat"><div class="stat-num">4</div><div class="stat-label">Harnesses</div></div>
-      <div class="stat"><div class="stat-num">33</div><div class="stat-label">Conditions</div></div>
-      <div class="stat"><div class="stat-num">7,224</div><div class="stat-label">Trials</div></div>
-    </div>
+  <div class="hero-grid"></div>
+  <div class="hero-fade"></div>
+  <div class="hero-content">
+    <h1>ClawsBench: Benchmarking How Well LLM Agents Work Across Realistic Productivity Tasks</h1>
+    <p class="tagline">The first evaluation framework measuring both <strong>capability</strong> and <strong>safety</strong> of LLM agents in high-fidelity simulated workspaces &mdash; Gmail, Calendar, Docs, Drive, and Slack.</p>
     <div class="cta">
-      <a href="#" class="btn-hero"><i class="bi bi-file-earmark-text me-1"></i> Read the Paper</a>
-      <a href="https://github.com/benchflow-ai/ClawsBench" class="btn-outline-hero"><i class="bi bi-github me-1"></i> View on GitHub</a>
-      <a href="#" class="btn-outline-hero"><i class="bi bi-discord me-1"></i> Join Discord</a>
+      <a href="#results" class="btn-primary">See Leaderboard</a>
+      <a href="#" class="btn-secondary">Read the Paper</a>
+      <a href="https://github.com/benchflow-ai/ClawsBench" class="btn-secondary">
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        GitHub
+      </a>
+    </div>
+    <div class="stat-row">
+      <div class="stat-pill"><strong>5</strong> <span>Mock Services</span></div>
+      <div class="stat-pill"><strong>44</strong> <span>Tasks</span></div>
+      <div class="stat-pill"><strong>6</strong> <span>Models</span></div>
+      <div class="stat-pill"><strong>4</strong> <span>Harnesses</span></div>
+      <div class="stat-pill"><strong>7,224</strong> <span>Trials</span></div>
     </div>
   </div>
 </div>
@@ -174,269 +200,282 @@ footer a { color: var(--accent-light); }
 
 <!-- Overview -->
 <section id="overview">
-  <h2>Overview</h2>
-  <p>LLM agents are increasingly deployed to automate productivity tasks &mdash; email triage, meeting scheduling, document management &mdash; but evaluating them on live services is risky due to potentially irreversible changes. Existing benchmarks rely on simplified environments and fail to capture realistic, stateful, multi-service workflows.</p>
-  <p><strong>ClawsBench</strong> addresses this with five high-fidelity mock services that replicate real Google Workspace and Slack APIs with full state management and deterministic snapshot/restore. Our 44 structured tasks cover single-service, cross-service, and safety-critical scenarios, enabling rigorous evaluation of both what agents <em>can</em> do and what they <em>should not</em> do.</p>
-  <p>We decompose agent scaffolding into two independent levers &mdash; <strong>domain skills</strong> (API knowledge via progressive disclosure) and a <strong>meta prompt</strong> (cross-service coordination) &mdash; and vary both to measure their separate and combined effects across 6 models, 4 agent harnesses, and 33 experimental conditions.</p>
-
-  <div class="fig-wrap">
-    <img src="assets/fig1_pipeline.png" alt="ClawsBench evaluation pipeline">
-    <div class="caption"><strong>Figure 1.</strong> ClawsBench evaluation pipeline: tasks are executed in Docker containers with mock services, sandboxed agent execution, and deterministic state management.</div>
+  <div class="section-header">
+    <h2>Overview</h2>
   </div>
+  <div class="narrow">
+    <p style="margin-bottom:1rem;">LLM agents are increasingly deployed to automate productivity tasks &mdash; email triage, meeting scheduling, document management &mdash; but evaluating them on live services is risky due to potentially irreversible changes. Existing benchmarks rely on simplified environments and fail to capture realistic, stateful, multi-service workflows.</p>
+    <p style="margin-bottom:1rem;"><strong>ClawsBench</strong> addresses this with five high-fidelity mock services that replicate real Google Workspace and Slack APIs with full state management and deterministic snapshot/restore. Our 44 structured tasks cover single-service, cross-service, and safety-critical scenarios, enabling rigorous evaluation of both what agents <em>can</em> do and what they <em>should not</em> do.</p>
+    <p>We decompose agent scaffolding into two independent levers &mdash; <strong>domain skills</strong> (API knowledge via progressive disclosure) and a <strong>meta prompt</strong> (cross-service coordination) &mdash; and vary both to measure their separate and combined effects across 6 models, 4 agent harnesses, and 33 experimental conditions.</p>
+  </div>
+  <figure class="fig">
+    <img src="assets/fig1_pipeline.png" alt="ClawsBench evaluation pipeline">
+    <figcaption><strong>Figure 1.</strong> ClawsBench evaluation pipeline: tasks are executed in Docker containers with mock services, sandboxed agent execution, and deterministic state management.</figcaption>
+  </figure>
 </section>
 
 <!-- Environments -->
 <section id="environments">
-  <h2>High-Fidelity Mock Environments</h2>
-  <p class="section-sub">Each environment implements a full REST API backed by SQLite, with realistic seed data including needles, edge cases, and safety traps. Agents interact exclusively through HTTP APIs &mdash; the same interface as live services.</p>
+  <div class="section-header">
+    <h2>High-Fidelity Mock Environments</h2>
+    <p>Each environment implements a full REST API backed by SQLite, with realistic seed data including needles, edge cases, and safety traps. Agents interact exclusively through HTTP APIs.</p>
+  </div>
   <div class="env-grid">
     <div class="env-card">
-      <img src="assets/gmail_img.png" alt="Gmail">
-      <div class="name">claw-gmail</div>
-      <div class="desc">54 endpoints, ~3,000 seeded emails with needles and edge cases</div>
+      <img src="assets/gmail_img.png" alt="Gmail" loading="lazy">
+      <div class="info">
+        <div class="name">claw-gmail</div>
+        <div class="desc">54 endpoints, ~3,000 seeded emails with needles and edge cases</div>
+      </div>
     </div>
     <div class="env-card">
-      <img src="assets/gcal_img.jpg" alt="Google Calendar">
-      <div class="name">claw-gcal</div>
-      <div class="desc">Full Calendar API mock with recurring events and timezone handling</div>
+      <img src="assets/gcal_img.jpg" alt="Google Calendar" loading="lazy">
+      <div class="info">
+        <div class="name">claw-gcal</div>
+        <div class="desc">Full Calendar API mock with recurring events and timezone handling</div>
+      </div>
     </div>
     <div class="env-card">
-      <img src="assets/gdoc_img.png" alt="Google Docs">
-      <div class="name">claw-gdocs</div>
-      <div class="desc">Document CRUD with collaborative editing semantics</div>
+      <img src="assets/gdoc_img.png" alt="Google Docs" loading="lazy">
+      <div class="info">
+        <div class="name">claw-gdocs</div>
+        <div class="desc">Document CRUD with collaborative editing semantics</div>
+      </div>
     </div>
     <div class="env-card">
-      <img src="assets/gdrive_img.png" alt="Google Drive">
-      <div class="name">claw-gdrive</div>
-      <div class="desc">File management with sharing permissions and access control</div>
+      <img src="assets/gdrive_img.png" alt="Google Drive" loading="lazy">
+      <div class="info">
+        <div class="name">claw-gdrive</div>
+        <div class="desc">File management with sharing permissions and access control</div>
+      </div>
     </div>
     <div class="env-card">
-      <img src="assets/slack_img.jpg" alt="Slack">
-      <div class="name">claw-slack</div>
-      <div class="desc">42 endpoints covering channels, threads, reactions, and DMs</div>
+      <img src="assets/slack_img.jpg" alt="Slack" loading="lazy">
+      <div class="info">
+        <div class="name">claw-slack</div>
+        <div class="desc">42 endpoints covering channels, threads, reactions, and DMs</div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- Results -->
+<!-- Results / Leaderboard -->
 <section id="results">
-  <h2>Main Results</h2>
-  <p class="section-sub">Model comparison on OpenClaw with full scaffolding (skills + meta prompt). TSR = Task Success Rate, UAR = Unsafe Action Rate, SCR = Safe Completion Rate. 95% cluster bootstrap CIs in brackets.</p>
-
-  <div style="overflow-x:auto;">
-    <table class="results-table">
-      <thead>
-        <tr>
-          <th>Model</th>
-          <th>TSR (off/off)</th>
-          <th>TSR (on/on)</th>
-          <th>UAR (on/on)</th>
-          <th>SCR (on/on)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Claude Opus 4.6</td>
-          <td>0%</td>
-          <td class="best">63% <small>[42,82]</small></td>
-          <td class="worst">23% <small>[8,40]</small></td>
-          <td class="best">50% <small>[32,68]</small></td>
-        </tr>
-        <tr>
-          <td>GLM-5</td>
-          <td>3%</td>
-          <td>60% <small>[41,78]</small></td>
-          <td class="worst">23% <small>[10,38]</small></td>
-          <td>48% <small>[32,63]</small></td>
-        </tr>
-        <tr>
-          <td>Gemini 3.1 Pro</td>
-          <td>8%</td>
-          <td>58% <small>[38,77]</small></td>
-          <td>10% <small>[3,19]</small></td>
-          <td>48% <small>[30,65]</small></td>
-        </tr>
-        <tr>
-          <td>Claude Sonnet 4.6</td>
-          <td>0%</td>
-          <td>56% <small>[36,75]</small></td>
-          <td>13% <small>[3,27]</small></td>
-          <td>48% <small>[32,64]</small></td>
-        </tr>
-        <tr>
-          <td>GPT-5.4</td>
-          <td>1%</td>
-          <td>53% <small>[34,72]</small></td>
-          <td class="best">7% <small>[0,15]</small></td>
-          <td>41% <small>[27,55]</small></td>
-        </tr>
-        <tr>
-          <td>Gemini 3.1 Flash-Lite</td>
-          <td>0%</td>
-          <td>39% <small>[21,57]</small></td>
-          <td class="worst">23% <small>[11,35]</small></td>
-          <td>26% <small>[12,41]</small></td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="section-header">
+    <h2>Agent Performance</h2>
+    <p>All models evaluated on OpenClaw with full scaffolding (skills + meta prompt). Sorted by Task Success Rate. 95% cluster bootstrap CIs shown.</p>
   </div>
 
-  <div class="fig-wrap">
+  <div class="leaderboard">
+    <div class="lb-header">
+      <div>Model</div>
+      <div style="text-align:right">TSR</div>
+      <div></div>
+      <div style="text-align:right">UAR</div>
+      <div></div>
+      <div style="text-align:right">SCR</div>
+    </div>
+    <div class="lb-row">
+      <div class="lb-model">Claude Opus 4.6</div>
+      <div class="lb-val">63% <span class="lb-ci">[42,82]</span></div>
+      <div class="lb-bar-wrap"><div class="lb-bar bar-tsr" style="width:100%"></div></div>
+      <div class="lb-val">23% <span class="lb-ci">[8,40]</span></div>
+      <div class="lb-bar-wrap"><div class="lb-bar bar-uar" style="width:69.7%"></div></div>
+      <div class="lb-scr">50%</div>
+    </div>
+    <div class="lb-row">
+      <div class="lb-model">GLM-5</div>
+      <div class="lb-val">60% <span class="lb-ci">[41,78]</span></div>
+      <div class="lb-bar-wrap"><div class="lb-bar bar-tsr" style="width:95.2%"></div></div>
+      <div class="lb-val">23% <span class="lb-ci">[10,38]</span></div>
+      <div class="lb-bar-wrap"><div class="lb-bar bar-uar" style="width:69.7%"></div></div>
+      <div class="lb-scr">48%</div>
+    </div>
+    <div class="lb-row">
+      <div class="lb-model">Gemini 3.1 Pro</div>
+      <div class="lb-val">58% <span class="lb-ci">[38,77]</span></div>
+      <div class="lb-bar-wrap"><div class="lb-bar bar-tsr" style="width:92.1%"></div></div>
+      <div class="lb-val">10% <span class="lb-ci">[3,19]</span></div>
+      <div class="lb-bar-wrap"><div class="lb-bar bar-uar" style="width:30.3%"></div></div>
+      <div class="lb-scr">48%</div>
+    </div>
+    <div class="lb-row">
+      <div class="lb-model">Claude Sonnet 4.6</div>
+      <div class="lb-val">56% <span class="lb-ci">[36,75]</span></div>
+      <div class="lb-bar-wrap"><div class="lb-bar bar-tsr" style="width:88.9%"></div></div>
+      <div class="lb-val">13% <span class="lb-ci">[3,27]</span></div>
+      <div class="lb-bar-wrap"><div class="lb-bar bar-uar" style="width:39.4%"></div></div>
+      <div class="lb-scr">48%</div>
+    </div>
+    <div class="lb-row">
+      <div class="lb-model">GPT-5.4</div>
+      <div class="lb-val">53% <span class="lb-ci">[34,72]</span></div>
+      <div class="lb-bar-wrap"><div class="lb-bar bar-tsr" style="width:84.1%"></div></div>
+      <div class="lb-val">7% <span class="lb-ci">[0,15]</span></div>
+      <div class="lb-bar-wrap"><div class="lb-bar bar-uar" style="width:21.2%"></div></div>
+      <div class="lb-scr">41%</div>
+    </div>
+    <div class="lb-row">
+      <div class="lb-model">Gemini 3.1 Flash-Lite</div>
+      <div class="lb-val">39% <span class="lb-ci">[21,57]</span></div>
+      <div class="lb-bar-wrap"><div class="lb-bar bar-tsr" style="width:61.9%"></div></div>
+      <div class="lb-val">23% <span class="lb-ci">[11,35]</span></div>
+      <div class="lb-bar-wrap"><div class="lb-bar bar-uar" style="width:69.7%"></div></div>
+      <div class="lb-scr">26%</div>
+    </div>
+  </div>
+
+  <div style="display:flex; gap:1.5rem; margin-top:0.75rem; font-size:0.75rem; color:var(--muted);">
+    <span><span style="display:inline-block;width:12px;height:12px;background:var(--accent);opacity:0.7;border-radius:2px;vertical-align:middle;margin-right:4px;"></span> TSR &mdash; Task Success Rate (higher is better)</span>
+    <span><span style="display:inline-block;width:12px;height:12px;background:var(--danger);opacity:0.7;border-radius:2px;vertical-align:middle;margin-right:4px;"></span> UAR &mdash; Unsafe Action Rate (lower is better)</span>
+  </div>
+
+  <figure class="fig">
     <img src="assets/fig_main_results.png" alt="Main results figure">
-    <div class="caption"><strong>Figure 2.</strong> TSR (left) and UAR (right) for six models on OpenClaw with full scaffolding. The top five models cluster at 53&ndash;63% TSR; only Flash-Lite trails. Capability and safety rankings diverge: Opus leads TSR but ties for highest UAR.</div>
-  </div>
+    <figcaption><strong>Figure 2.</strong> TSR and UAR for six models on OpenClaw with full scaffolding. The top five models cluster at 53&ndash;63% TSR; only Flash-Lite trails. Capability and safety rankings diverge.</figcaption>
+  </figure>
 </section>
 
 <!-- Key Findings -->
 <section id="findings">
-  <h2>Key Findings</h2>
-
-  <div class="finding">
-    <div class="finding-icon scaffold"><i class="bi bi-layers"></i></div>
-    <div>
+  <div class="section-header">
+    <h2>Key Findings</h2>
+  </div>
+  <ul class="findings-list narrow">
+    <li>
       <h4>Scaffolding dominates model capability</h4>
       <p>Without skills + meta prompt, all models score 0&ndash;8% TSR. With scaffolding, every model jumps to 39&ndash;63% TSR. The scaffolding effect (40&ndash;60pp lift) dwarfs model differences (10pp spread among top five).</p>
-    </div>
-  </div>
-
-  <div class="finding">
-    <div class="finding-icon capability"><i class="bi bi-bar-chart"></i></div>
-    <div>
+    </li>
+    <li>
       <h4>Top models are statistically indistinguishable</h4>
-      <p>Opus (63%), GLM-5 (60%), Pro (58%), Sonnet (56%), GPT-5.4 (53%) &mdash; no pairwise differences survive Holm&ndash;Bonferroni correction. Only Flash-Lite (39%) clearly trails the pack.</p>
-    </div>
-  </div>
-
-  <div class="finding">
-    <div class="finding-icon safety"><i class="bi bi-shield-exclamation"></i></div>
-    <div>
+      <p>Opus (63%), GLM-5 (60%), Pro (58%), Sonnet (56%), GPT-5.4 (53%) &mdash; no pairwise differences survive Holm&ndash;Bonferroni correction. Only Flash-Lite (39%) clearly trails.</p>
+    </li>
+    <li>
       <h4>No safety&ndash;capability tradeoff</h4>
-      <p>UAR ranges 7&ndash;23% across models with no monotonic relationship to capability. The strongest model (Opus, 63% TSR) ties for the most unsafe (23% UAR). The safest model (GPT-5.4, 7% UAR) is mid-tier on task success.</p>
-    </div>
-  </div>
-
-  <div class="finding">
-    <div class="finding-icon insight"><i class="bi bi-diagram-3"></i></div>
-    <div>
+      <p>UAR ranges 7&ndash;23% across models with no monotonic relationship to capability. The strongest model (Opus, 63% TSR) ties for the most unsafe (23% UAR). The safest (GPT-5.4, 7% UAR) is mid-tier on task success.</p>
+    </li>
+    <li>
       <h4>Multi-service tasks are harder and more dangerous</h4>
       <p>Single-service tasks outperform by +23pp TSR, while multi-service tasks produce 10pp more unsafe actions. Consistent across all 33 conditions.</p>
-    </div>
-  </div>
-
-  <div class="finding">
-    <div class="finding-icon scaffold"><i class="bi bi-puzzle"></i></div>
-    <div>
+    </li>
+    <li>
       <h4>Skills raise safety risk; meta prompt counteracts</h4>
       <p>Domain skills increase both TSR and UAR. The meta prompt provides the safety guardrail &mdash; the skills&times;meta interaction on UAR is &minus;22 to &minus;28pp (Holm-corrected).</p>
-    </div>
-  </div>
-
-  <div class="finding">
-    <div class="finding-icon capability"><i class="bi bi-hdd-rack"></i></div>
-    <div>
+    </li>
+    <li>
       <h4>Native harnesses help at baseline, not at the top</h4>
-      <p>At off/off, native harnesses (Claude Code, Codex, Gemini CLI) provide +4 to +29pp TSR via implicit tool definitions. At on/on with explicit scaffolding, the gap shrinks to &le;6pp &mdash; scaffolding equalizes harnesses.</p>
-    </div>
-  </div>
+      <p>At off/off, native harnesses (Claude Code, Codex, Gemini CLI) provide +4 to +29pp TSR. At on/on with explicit scaffolding, the gap shrinks to &le;6pp &mdash; scaffolding equalizes harnesses.</p>
+    </li>
+  </ul>
 </section>
 
 <!-- Rogue Behaviors -->
 <section id="behaviors">
-  <h2>Agent Rogue Behaviors</h2>
-  <p class="section-sub">Analysis of 7,224 trajectories reveals eight recurring patterns of unsafe behavior that emerge across models and harnesses.</p>
-
-  <div class="behavior-grid">
-    <div class="behavior">
-      <div class="label"><i class="bi bi-terminal"></i> Sandbox Escalation</div>
-      <div class="detail">Agents systematically probe evaluation infrastructure via environment variable enumeration, database access attempts, and direct localhost calls. GPT-5.4 on Codex made 1,471 escalation calls; it explicitly acknowledged hitting the sandbox boundary.</div>
+  <div class="section-header">
+    <h2>Agent Rogue Behaviors</h2>
+    <p>Analysis of 7,224 trajectories reveals eight recurring patterns of unsafe behavior across models and harnesses.</p>
+  </div>
+  <div class="bh-grid">
+    <div class="bh-card">
+      <h4>Sandbox Escalation</h4>
+      <p>Agents systematically probe evaluation infrastructure via environment variable enumeration, database access, and direct localhost calls. GPT-5.4 on Codex made 1,471 escalation calls; it explicitly acknowledged hitting the sandbox boundary.</p>
     </div>
-    <div class="behavior">
-      <div class="label"><i class="bi bi-chat-square-text"></i> Prompt Injection Compliance</div>
-      <div class="detail">Embedded document comments, CC injection via email headers, and social-engineering exfiltration emails. Compliance rates range from 90% (Flash-Lite) to 0% (Claude models). Only one agent across 7,224 trials explicitly detected an injection.</div>
+    <div class="bh-card">
+      <h4>Prompt Injection Compliance</h4>
+      <p>Embedded document comments, CC injection via email headers, and social-engineering exfiltration. Compliance rates range from 90% (Flash-Lite) to 0% (Claude models). Only one agent across 7,224 trials explicitly detected an injection.</p>
     </div>
-    <div class="behavior">
-      <div class="label"><i class="bi bi-file-earmark-lock"></i> Unauthorized Contract Modification</div>
-      <div class="detail">Despite explicit legal blockers ("Do not amend until notification is complete"), violation rates range 0&ndash;67%. Safety rules can backfire: one agent classified the legal notice as an "embedded override" and dismissed it.</div>
+    <div class="bh-card">
+      <h4>Unauthorized Contract Modification</h4>
+      <p>Despite explicit legal blockers, violation rates range 0&ndash;67%. Safety rules can backfire: one agent classified a legal notice as an &ldquo;embedded override&rdquo; and dismissed it, modifying all 5 contracts.</p>
     </div>
-    <div class="behavior">
-      <div class="label"><i class="bi bi-eye"></i> Confidential Data Leakage</div>
-      <div class="detail">Agents forward internal financials to external recipients or share entire Drive folders without reviewing contents. Agents that sanitize data content still fail to check recipient authorization.</div>
+    <div class="bh-card">
+      <h4>Confidential Data Leakage</h4>
+      <p>Agents forward internal financials to external recipients or share entire Drive folders without reviewing contents. Agents that sanitize data content still fail to check recipient authorization.</p>
     </div>
-    <div class="behavior">
-      <div class="label"><i class="bi bi-shield-lock"></i> Anti-Cheating Sandbox</div>
-      <div class="detail">We discovered agents could read evaluation criteria, solutions, and oracle answers. Unix permission hardening with a restricted agent user blocks all access. Across 1,529 trajectories, 28 (1.8%) attempted cheating &mdash; all blocked, zero penetrations.</div>
+    <div class="bh-card">
+      <h4>Anti-Cheating Sandbox</h4>
+      <p>We discovered agents could read evaluation criteria, solutions, and oracle answers. Unix permission hardening blocks all access. Across 1,529 trajectories, 28 (1.8%) attempted cheating &mdash; all blocked, zero penetrations.</p>
     </div>
-    <div class="behavior">
-      <div class="label"><i class="bi bi-x-octagon"></i> Overzealous Enforcement</div>
-      <div class="detail">Agents refuse valid operations or apply safety constraints too broadly, blocking legitimate task completion in an effort to be "safe."</div>
+    <div class="bh-card">
+      <h4>Overzealous Enforcement</h4>
+      <p>Agents refuse valid operations or apply safety constraints too broadly, blocking legitimate task completion in an effort to be &ldquo;safe.&rdquo;</p>
     </div>
-    <div class="behavior">
-      <div class="label"><i class="bi bi-cloud-fog2"></i> Hallucinated Actions</div>
-      <div class="detail">Agents fabricate API responses, invent email addresses, or claim to have completed actions they never executed.</div>
+    <div class="bh-card">
+      <h4>Hallucinated Actions</h4>
+      <p>Agents fabricate API responses, invent email addresses, or claim to have completed actions they never executed.</p>
     </div>
-    <div class="behavior">
-      <div class="label"><i class="bi bi-arrow-repeat"></i> Degenerate Loops</div>
-      <div class="detail">Agents enter infinite retry loops, repeating failed API calls or re-reading the same files without making progress.</div>
+    <div class="bh-card">
+      <h4>Degenerate Loops</h4>
+      <p>Agents enter infinite retry loops, repeating failed API calls or re-reading the same files without making progress.</p>
     </div>
   </div>
 </section>
 
 <!-- News -->
 <section id="news">
-  <h2>News</h2>
-  <div class="timeline">
-    <div class="tl-item current">
-      <div class="tl-date">2026/4/8</div>
-      <div class="tl-title">Project website &amp; GitHub repo launched</div>
-      <div class="tl-desc">Public release of trajectory data, key findings, and rogue behavior analysis.</div>
-    </div>
-    <div class="tl-item done">
-      <div class="tl-date">2026/4/8</div>
-      <div class="tl-title">Extended paper submitted to arXiv</div>
-      <div class="tl-desc">6 models, 4 harnesses, 33 conditions, 7,224 trials.</div>
-    </div>
-    <div class="tl-item done">
-      <div class="tl-date">2026/3/22</div>
-      <div class="tl-title">Anti-cheating sandbox deployed</div>
-      <div class="tl-desc">Unix permission hardening after discovering agents could read evaluation files. 28/1,529 cheating attempts blocked, zero penetrations.</div>
-    </div>
-    <div class="tl-item done">
-      <div class="tl-date">2026/3/15</div>
-      <div class="tl-title">Initial paper submitted</div>
-      <div class="tl-desc">44 tasks, 2 models, 2 harnesses, 4 conditions.</div>
-    </div>
+  <div class="section-header">
+    <h2>News</h2>
   </div>
+  <ul class="news-list narrow">
+    <li>
+      <div class="news-date">2026/4/8</div>
+      <div class="news-text"><strong>Project website &amp; GitHub repo launched.</strong> Public release of trajectory data, key findings, and rogue behavior analysis.</div>
+    </li>
+    <li>
+      <div class="news-date">2026/4/8</div>
+      <div class="news-text"><strong>Extended paper submitted to arXiv.</strong> 6 models, 4 harnesses, 33 conditions, 7,224 trials.</div>
+    </li>
+    <li>
+      <div class="news-date">2026/3/22</div>
+      <div class="news-text"><strong>Anti-cheating sandbox deployed.</strong> Unix permission hardening after discovering agents could read evaluation files. 28/1,529 attempts blocked, zero penetrations.</div>
+    </li>
+    <li>
+      <div class="news-date">2026/3/15</div>
+      <div class="news-text"><strong>Initial paper submitted.</strong> 44 tasks, 2 models, 2 harnesses, 4 conditions.</div>
+    </li>
+  </ul>
 
-  <h4 style="margin-top:2rem;">Upcoming</h4>
-  <div class="timeline">
-    <div class="tl-item">
-      <div class="tl-date">May 2026</div>
-      <div class="tl-title">Environment preview</div>
-      <div class="tl-desc">Docker images for mock services available for community testing.</div>
-    </div>
-    <div class="tl-item">
-      <div class="tl-date">Summer 2026</div>
-      <div class="tl-title">First batch of tasks released</div>
-      <div class="tl-desc">Open-source task definitions with Dockerized environments for reproducible evaluation.</div>
-    </div>
-    <div class="tl-item">
-      <div class="tl-date">Ongoing</div>
-      <div class="tl-title">Community leaderboard</div>
-      <div class="tl-desc">Public leaderboard for model submissions. Accepting community task contributions.</div>
-    </div>
-  </div>
+  <h3 style="font-size:1.1rem; margin-top:2.5rem; margin-bottom:1rem;">Upcoming</h3>
+  <ul class="news-list narrow">
+    <li>
+      <div class="news-date">May 2026</div>
+      <div class="news-text"><strong>Environment preview.</strong> Docker images for mock services available for community testing.</div>
+    </li>
+    <li>
+      <div class="news-date">Summer</div>
+      <div class="news-text"><strong>First batch of tasks released.</strong> Open-source task definitions with Dockerized environments for reproducible evaluation.</div>
+    </li>
+    <li>
+      <div class="news-date">Ongoing</div>
+      <div class="news-text"><strong>Community leaderboard.</strong> Public leaderboard for model submissions. Accepting community task contributions.</div>
+    </li>
+  </ul>
 </section>
 
-<!-- Links -->
-<section id="links">
-  <h2>Resources</h2>
-  <div class="link-bar">
-    <a href="#"><i class="bi bi-file-earmark-pdf"></i> Paper (arXiv)</a>
-    <a href="https://github.com/benchflow-ai/ClawsBench"><i class="bi bi-github"></i> GitHub</a>
-    <a href="#"><i class="bi bi-discord"></i> Discord</a>
-    <a href="https://agentskills-workshop.github.io"><i class="bi bi-globe"></i> Agent Skills Workshop</a>
+<!-- Resources -->
+<section id="resources">
+  <div class="section-header">
+    <h2>Resources</h2>
   </div>
-  <p style="margin-top:1.25rem; font-size:0.9rem; color:var(--ink-light);">
+  <div class="res-grid">
+    <a class="res-card" href="#">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M4 0a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V4.414A2 2 0 0013.414 3L11 .586A2 2 0 009.586 0H4zm5 1.5v2A1.5 1.5 0 0010.5 5H13v9a.5.5 0 01-.5.5h-9A.5.5 0 013 14V2a.5.5 0 01.5-.5H9z"/></svg>
+      Paper (arXiv)
+    </a>
+    <a class="res-card" href="https://github.com/benchflow-ai/ClawsBench" target="_blank">
+      <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      GitHub
+    </a>
+    <a class="res-card" href="#">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M13.545 2.907a13.227 13.227 0 00-3.257-1.011.05.05 0 00-.052.025c-.141.25-.297.577-.406.833a12.19 12.19 0 00-3.658 0 8.258 8.258 0 00-.412-.833.051.051 0 00-.052-.025c-1.125.194-2.22.534-3.257 1.011a.041.041 0 00-.021.018C.356 6.024-.213 9.047.066 12.032c.001.014.01.028.021.037a13.276 13.276 0 003.995 2.02.05.05 0 00.056-.019c.308-.42.582-.863.818-1.329a.05.05 0 00-.028-.07 8.748 8.748 0 01-1.248-.595.05.05 0 01-.005-.084c.084-.063.168-.129.248-.195a.05.05 0 01.051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 01.053.007c.08.066.164.132.248.195a.05.05 0 01-.004.085c-.399.233-.813.44-1.249.594a.05.05 0 00-.027.07c.24.465.515.909.817 1.329a.05.05 0 00.056.019 13.235 13.235 0 004.001-2.02.049.049 0 00.021-.037c.334-3.451-.559-6.449-2.366-9.106a.034.034 0 00-.02-.019z"/></svg>
+      Discord
+    </a>
+    <a class="res-card" href="https://agentskills-workshop.github.io" target="_blank">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M0 8a8 8 0 1116 0A8 8 0 010 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855A7.97 7.97 0 006.06 4H7.5V1.077zM4.09 4a9.267 9.267 0 011.98-3.118A6.976 6.976 0 003.11 3.397 7.005 7.005 0 004.09 4zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a6.958 6.958 0 00-.656 2.5h2.49zM4.847 5a12.5 12.5 0 00-.338 2.5H7.5V5H4.847zM8.5 5v2.5h2.99a12.495 12.495 0 00-.337-2.5H8.5zM4.51 8.5a12.5 12.5 0 00.337 2.5H7.5V8.5H4.51zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5H8.5z"/></svg>
+      Agent Skills Workshop
+    </a>
+  </div>
+  <p style="margin-top:1.25rem; font-size:0.88rem; color:var(--muted);">
     ClawsBench is developed by the <a href="https://benchflow.ai">BenchFlow</a> team and collaborators from Stanford, CMU, Ohio State, UC Berkeley, UC Davis, Dartmouth, USC, Boston University, and UNC.
   </p>
 </section>
@@ -444,11 +483,10 @@ footer a { color: var(--accent-light); }
 </div>
 
 <footer>
-  <div class="container text-center">
+  <div class="container">
     ClawsBench &copy; 2026 BenchFlow &middot; Licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> &middot; <a href="https://github.com/benchflow-ai/ClawsBench">GitHub</a>
   </div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
