@@ -11,11 +11,8 @@ ClawsBench evaluates LLM agents on realistic productivity tasks across **5 high-
 
 ## News
 
-- **[2026/4/8]** Trajectories and result data released on [Hugging Face](https://huggingface.co/datasets/benchflow/ClawsBench) (7,224 trials across 33 conditions). Tasks will be added soon.
-- **[2026/4/8]** We release the ClawsBench [project website](https://benchflow-ai.github.io/ClawsBench/) and [GitHub repo](https://github.com/benchflow-ai/ClawsBench) with key findings and rogue behavior analysis.
-- **[2026/4/8]** Extended paper submitted to arXiv — 6 models, 4 harnesses, 33 conditions, 7,224 trials.
-- **[2026/3/22]** Anti-cheating sandbox deployed after discovering agents could read evaluation files. 28/1,529 attempts blocked, zero penetrations.
-- **[2026/3/15]** Initial paper submitted — 44 tasks, 2 models, 2 harnesses.
+- **[2026/4/8]** Project website, GitHub repo, and [Hugging Face dataset](https://huggingface.co/datasets/benchflow/ClawsBench) launched. 7,834 agent traces across 33 conditions. Tasks will be added soon.
+- **[2026/4/7]** Paper submitted to arXiv — 6 models, 4 harnesses, 33 conditions, 7,224 trials.
 
 ## Headline Results
 
