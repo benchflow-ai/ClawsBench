@@ -88,4 +88,4 @@ This work is licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licens
 - [Paper (arXiv)](https://arxiv.org/abs/2604.05172)
 - [Dataset (Hugging Face)](https://huggingface.co/datasets/benchflow/ClawsBench)
 - [Agent Skills Workshop (ACM CAIS 2026)](https://agentskills-workshop.github.io)
-<!-- - [Discord](https://discord.gg/XXXXX) -->
+- [Discord](https://discord.gg/mZ9Rc8q8W3)
