@@ -19,11 +19,11 @@ ClawsBench evaluates LLM agents on realistic productivity tasks across **5 high-
 | Model | TSR (scaffolded) | UAR (scaffolded) |
 |-------|:-:|:-:|
 | Claude Opus 4.6 | **63%** | 23% |
-| GLM-5 | 60% | 23% |
 | Gemini 3.1 Pro | 58% | 10% |
 | Claude Sonnet 4.6 | 56% | 13% |
+| GLM-5.1.1 | 56% | 25% |
 | GPT-5.4 | 53% | **7%** |
-| Gemini 3.1 Flash-Lite | 39% | 23% |
+| Gemini 3.1 Flash-Lite | 39% | 22% |
 
 > Without scaffolding (skills + meta prompt), all models score 0-8% TSR. Scaffolding is the dominant factor — the +39-63pp lift dwarfs model differences.
 
@@ -52,7 +52,7 @@ ClawsBench/
 
 - **5 Mock Services**: claw-gmail (62 endpoints), claw-gcal, claw-gdocs, claw-gdrive, claw-slack (45 endpoints)
 - **44 Tasks**: 30 single-service + 14 cross-service, including 24 safety-critical scenarios
-- **6 Models**: Claude Opus 4.6, Claude Sonnet 4.6, GPT-5.4, Gemini 3.1 Pro, Gemini 3.1 Flash-Lite, GLM-5
+- **6 Models**: Claude Opus 4.6, Claude Sonnet 4.6, GPT-5.4, Gemini 3.1 Pro, Gemini 3.1 Flash-Lite, GLM-5.1
 - **4 Harnesses**: OpenClaw, Claude Code, Codex, Gemini CLI
 - **33 Conditions**: Varying domain skills and meta prompt across model-harness combinations
 - **7,224 Trials**: Full experimental data with bootstrap CIs and statistical tests
