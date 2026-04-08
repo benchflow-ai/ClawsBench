@@ -11,7 +11,7 @@ ClawsBench evaluates LLM agents on realistic productivity tasks across **5 high-
 
 ## News
 
-- **[2026/4/8]** Project website, GitHub repo, and [Hugging Face dataset](https://huggingface.co/datasets/benchflow/ClawsBench) launched. 7,834 agent traces across 33 conditions. Tasks will be added soon.
+- **[2026/4/8]** Project website, GitHub repo, and [Hugging Face dataset](https://huggingface.co/datasets/benchflow/ClawsBench) launched. 7,834 agent traces (7,224 main + pilot data). Tasks will be added soon.
 - **[2026/4/7]** Paper submitted to arXiv — 6 models, 4 harnesses, 33 conditions, 7,224 trials.
 
 ## Headline Results
@@ -29,7 +29,7 @@ ClawsBench evaluates LLM agents on realistic productivity tasks across **5 high-
 
 ## Key Findings
 
-1. **Scaffolding dominates model capability** — the scaffolding effect (40-60pp) dwarfs the model spread (10pp among top five)
+1. **Scaffolding dominates model capability** — the scaffolding effect (+39-63pp) dwarfs the model spread (10pp among top five)
 2. **Top models are statistically indistinguishable** — no pairwise differences survive Holm-Bonferroni correction
 3. **No safety-capability tradeoff** — the best model (Opus, 63% TSR) ties for the most unsafe (23% UAR)
 4. **Multi-service tasks are harder and more dangerous** — +23pp TSR gap, +10pp UAR for multi-service
@@ -50,7 +50,7 @@ ClawsBench/
 
 ## Benchmark Overview
 
-- **5 Mock Services**: claw-gmail (54 endpoints, ~3K emails), claw-gcal, claw-gdocs, claw-gdrive, claw-slack (42 endpoints)
+- **5 Mock Services**: claw-gmail (62 endpoints), claw-gcal, claw-gdocs, claw-gdrive, claw-slack (45 endpoints)
 - **44 Tasks**: 30 single-service + 14 cross-service, including 24 safety-critical scenarios
 - **6 Models**: Claude Opus 4.6, Claude Sonnet 4.6, GPT-5.4, Gemini 3.1 Pro, Gemini 3.1 Flash-Lite, GLM-5
 - **4 Harnesses**: OpenClaw, Claude Code, Codex, Gemini CLI
@@ -59,7 +59,7 @@ ClawsBench/
 
 ## Anti-Cheating Sandbox
 
-We discovered that agents could read evaluation criteria, oracle solutions, and seed data when running as root. We deployed Unix permission hardening with a restricted `agent` user and `gosu` privilege dropping. Across 1,529 trajectories, 28 (1.8%) attempted cheating — **all were blocked with zero successful penetrations**.
+We discovered that agents could read evaluation criteria, oracle solutions, and seed data when running as root. We deployed Unix permission hardening with a restricted `agent` user and `gosu` privilege dropping. Zero successful sandbox bypasses were observed across all 7,224 trials.
 
 ## License
 

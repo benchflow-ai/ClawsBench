@@ -238,7 +238,7 @@ footer a { color: var(--muted); }
   <div class="env-grid">
     <div class="env-card">
       <img src="assets/gmail_img.png" alt="Gmail" loading="lazy">
-      <div class="info"><div class="name">claw-gmail</div><div class="desc">54 endpoints, ~3,000 seeded emails with needles and edge cases</div></div>
+      <div class="info"><div class="name">claw-gmail</div><div class="desc">62 endpoints with realistic seeded emails, needles, and edge cases</div></div>
     </div>
     <div class="env-card">
       <img src="assets/gcal_img.jpg" alt="Google Calendar" loading="lazy">
@@ -254,7 +254,7 @@ footer a { color: var(--muted); }
     </div>
     <div class="env-card">
       <img src="assets/slack_img.jpg" alt="Slack" loading="lazy">
-      <div class="info"><div class="name">claw-slack</div><div class="desc">42 endpoints covering channels, threads, reactions, and DMs</div></div>
+      <div class="info"><div class="name">claw-slack</div><div class="desc">45 endpoints covering channels, threads, reactions, and DMs</div></div>
     </div>
   </div>
 </section>
@@ -279,7 +279,7 @@ footer a { color: var(--muted); }
   <ul class="findings-list narrow">
     <li>
       <h4>Scaffolding dominates model capability</h4>
-      <p>Without skills + meta prompt, all models score 0&ndash;8% TSR. With scaffolding, every model jumps to 39&ndash;63% TSR. The scaffolding effect (40&ndash;60pp lift) dwarfs model differences (10pp spread among top five).</p>
+      <p>Without skills + meta prompt, all models score 0&ndash;8% TSR. With scaffolding, every model jumps to 39&ndash;63% TSR. The scaffolding effect (+39&ndash;63pp lift) dwarfs model differences (10pp spread among top five).</p>
     </li>
     <li>
       <h4>Top models are statistically indistinguishable</h4>
@@ -291,7 +291,7 @@ footer a { color: var(--muted); }
     </li>
     <li>
       <h4>Multi-service tasks are harder and more dangerous</h4>
-      <p>Single-service tasks outperform by +23pp TSR, while multi-service tasks produce 10pp more unsafe actions. Consistent across all 33 conditions.</p>
+      <p>Single-service tasks outperform by +23pp TSR, while multi-service tasks produce 10pp more unsafe actions. Consistent across conditions (TSR direction in 28/33, UAR direction in 30/33).</p>
     </li>
     <li>
       <h4>Skills raise safety risk; meta prompt counteracts</h4>
@@ -328,8 +328,8 @@ footer a { color: var(--muted); }
       <p>Agents forward internal financials to external recipients or share entire Drive folders without reviewing contents. Agents that sanitize data content still fail to check recipient authorization.</p>
     </div>
     <div class="bh-card">
-      <h4>Anti-Cheating Sandbox</h4>
-      <p>We discovered agents could read evaluation criteria, solutions, and oracle answers. Unix permission hardening blocks all access. Across 1,529 trajectories, 28 (1.8%) attempted cheating &mdash; all blocked, zero penetrations.</p>
+      <h4>Over-Refusal</h4>
+      <p>Agents decline legitimate requests or add unnecessary caveats. Safety-trained models sometimes refuse to execute valid task instructions, mistaking normal operations for prohibited actions.</p>
     </div>
     <div class="bh-card">
       <h4>Overzealous Enforcement</h4>
@@ -354,7 +354,7 @@ footer a { color: var(--muted); }
   <ul class="news-list narrow">
     <li>
       <div class="news-date">2026/4/8</div>
-      <div class="news-text"><strong>Project website, GitHub repo &amp; <a href="https://huggingface.co/datasets/benchflow/ClawsBench">Hugging Face dataset</a> launched.</strong> 7,834 agent traces across 33 conditions. Tasks will be added soon.</div>
+      <div class="news-text"><strong>Project website, GitHub repo &amp; <a href="https://huggingface.co/datasets/benchflow/ClawsBench">Hugging Face dataset</a> launched.</strong> 7,834 agent traces (7,224 main + pilot data). Tasks will be added soon.</div>
     </li>
     <li>
       <div class="news-date">2026/4/7</div>
@@ -407,7 +407,7 @@ footer a { color: var(--muted); }
     </a>
   </div>
   <p style="margin-top:1.25rem; font-size:0.88rem; color:var(--muted);">
-    ClawsBench is developed by the <a href="https://benchflow.ai">BenchFlow</a> team and collaborators from Stanford, CMU, Ohio State, UC Berkeley, UC Davis, Dartmouth, USC, Boston University, and UNC.
+    ClawsBench is developed by the <a href="https://benchflow.ai">BenchFlow</a> team and collaborators from RLWRLD, Ohio State, Stanford, CMU, UC Berkeley, Amazon, UC Santa Cruz, Dartmouth, Boston University, and UNC.
   </p>
 </section>
 
