@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ClawsBench &mdash; Benchmarking LLM Agents in Realistic Productivity Environments</title>
+<title>ClawsBench &mdash; Evaluating Capability and Safety of LLM Productivity Agents</title>
 <meta name="description" content="ClawsBench: A benchmark for evaluating LLM agent capability and safety across 5 high-fidelity mock services, 44 tasks, 6 models, and 7,224 trials.">
 <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet">
 <style>
@@ -26,43 +26,48 @@ body { font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif; co
 h1, h2, h3, h4 { font-family: 'Satoshi', sans-serif; font-weight: 700; color: var(--foreground); line-height: 1.25; }
 a { color: var(--foreground); text-decoration: underline; text-underline-offset: 2px; }
 a:hover { color: var(--muted); }
-code { font-family: 'Google Sans Code Variable', ui-monospace, monospace; font-size: 0.85em; background: var(--accent-muted); padding: 2px 6px; border-radius: 4px; }
 
 /* ── Container ─────────────────────────────────── */
 .container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
 .narrow { max-width: 720px; }
 
-/* ── Nav ───────────────────────────────────────── */
-nav { position: sticky; top: 0; z-index: 50; background: var(--background); border-bottom: 1px solid var(--border); backdrop-filter: blur(8px); }
-nav .inner { display: flex; align-items: center; justify-content: space-between; height: 3.5rem; }
-nav .logo { font-weight: 900; font-size: 1.05rem; text-decoration: none; color: var(--foreground); letter-spacing: -0.02em; }
-nav .links { display: flex; gap: 1.5rem; align-items: center; }
-nav .links a { font-size: 0.85rem; font-weight: 500; color: var(--muted); text-decoration: none; transition: color 150ms; }
-nav .links a:hover { color: var(--foreground); }
-nav .gh-btn { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.8rem; font-weight: 600; color: var(--foreground) !important; background: var(--card); border: 1px solid var(--border); padding: 0.3rem 0.8rem; border-radius: 6px; text-decoration: none; transition: border-color 150ms; }
-nav .gh-btn:hover { border-color: var(--foreground); }
+/* ── Pill Nav ──────────────────────────────────── */
+.nav-outer { position: sticky; top: 0; z-index: 50; padding: 0.75rem 1.5rem 0; }
+.nav-pill { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; background: var(--card); border: 1px solid var(--border); border-radius: 999px; padding: 0.45rem 0.5rem 0.45rem 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+.nav-pill .logo { font-weight: 900; font-size: 1rem; text-decoration: none; color: var(--foreground); letter-spacing: -0.02em; }
+.nav-pill .nav-links { display: flex; align-items: center; gap: 0.25rem; }
+.nav-pill .nav-links a { font-size: 0.82rem; font-weight: 500; color: var(--muted); text-decoration: none; padding: 0.35rem 0.7rem; border-radius: 999px; transition: color 150ms, background 150ms; }
+.nav-pill .nav-links a:hover { color: var(--foreground); background: var(--background); }
+.nav-pill .icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; color: var(--muted); text-decoration: none; transition: color 150ms, background 150ms; }
+.nav-pill .icon-btn:hover { color: var(--foreground); background: var(--background); }
+.nav-pill .icon-btn svg { width: 16px; height: 16px; }
 
 /* ── Hero ──────────────────────────────────────── */
-.hero { position: relative; min-height: 75vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 6rem 1.5rem 4rem; overflow: hidden; }
+.hero { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 5rem 1.5rem 3rem; overflow: hidden; }
 .hero-grid { position: absolute; inset: 0; background-image:
   linear-gradient(var(--border) 1px, transparent 1px),
   linear-gradient(90deg, var(--border) 1px, transparent 1px);
-  background-size: 40px 40px; opacity: 0.5; }
-.hero-fade { position: absolute; inset: 0; background: radial-gradient(circle at center, transparent 30%, var(--background) 75%); }
+  background-size: 40px 40px; opacity: 0.45; }
+.hero-fade { position: absolute; inset: 0; background: radial-gradient(circle at center, transparent 30%, var(--background) 70%); }
 .hero-content { position: relative; z-index: 1; }
-.hero h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); font-weight: 900; letter-spacing: -0.04em; max-width: 800px; margin: 0 auto; }
-.hero .tagline { font-size: 1.1rem; color: var(--muted); max-width: 620px; margin: 1rem auto 0; font-weight: 400; }
+.hero h1 { font-size: clamp(2rem, 4.5vw, 2.8rem); font-weight: 900; letter-spacing: -0.04em; max-width: 780px; margin: 0 auto; }
+.hero .tagline { font-size: 1.05rem; color: var(--muted); max-width: 600px; margin: 1rem auto 0; font-weight: 400; }
 .hero .cta { margin-top: 2rem; display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
-.btn-primary { display: inline-flex; align-items: center; gap: 0.4rem; background: var(--foreground); color: var(--background); font-weight: 600; font-size: 0.88rem; padding: 0.55rem 1.5rem; border: 1px solid var(--foreground); border-radius: var(--radius); text-decoration: none; transition: opacity 150ms; }
+.btn-primary { display: inline-flex; align-items: center; gap: 0.4rem; background: var(--foreground); color: var(--background); font-family: 'Satoshi', sans-serif; font-weight: 600; font-size: 0.88rem; padding: 0.55rem 1.5rem; border: 1px solid var(--foreground); border-radius: 999px; text-decoration: none; transition: opacity 150ms; cursor: pointer; }
 .btn-primary:hover { opacity: 0.85; color: var(--background); }
-.btn-secondary { display: inline-flex; align-items: center; gap: 0.4rem; background: var(--card); color: var(--foreground); font-weight: 600; font-size: 0.88rem; padding: 0.55rem 1.5rem; border: 1px solid var(--border); border-radius: var(--radius); text-decoration: none; transition: border-color 150ms, background 150ms; }
-.btn-secondary:hover { border-color: var(--foreground); background: var(--background); color: var(--foreground); }
+.btn-secondary { display: inline-flex; align-items: center; gap: 0.4rem; background: var(--card); color: var(--foreground); font-family: 'Satoshi', sans-serif; font-weight: 600; font-size: 0.88rem; padding: 0.55rem 1.5rem; border: 1px solid var(--border); border-radius: 999px; text-decoration: none; transition: border-color 150ms; cursor: pointer; }
+.btn-secondary:hover { border-color: var(--foreground); color: var(--foreground); }
 
-/* ── Stat pills (hero) ─────────────────────────── */
-.stat-row { display: flex; justify-content: center; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap; }
-.stat-pill { background: var(--card); border: 1px solid var(--border); border-radius: 999px; padding: 0.4rem 1.1rem; display: flex; align-items: baseline; gap: 0.4rem; font-size: 0.82rem; }
-.stat-pill strong { font-weight: 700; font-size: 1rem; }
+/* ── Stat pills ────────────────────────────────── */
+.stat-row { display: flex; justify-content: center; gap: 0.75rem; margin-top: 2rem; flex-wrap: wrap; }
+.stat-pill { background: var(--card); border: 1px solid var(--border); border-radius: 999px; padding: 0.35rem 1rem; display: flex; align-items: baseline; gap: 0.35rem; font-size: 0.8rem; }
+.stat-pill strong { font-weight: 700; font-size: 0.95rem; }
 .stat-pill span { color: var(--muted); font-weight: 400; }
+
+/* ── Hero figure ───────────────────────────────── */
+.hero-fig { position: relative; z-index: 1; max-width: 860px; margin: 3rem auto 0; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; box-shadow: 0 4px 24px rgba(0,0,0,0.04); }
+.hero-fig img { width: 100%; display: block; border-radius: 6px; }
+.hero-fig figcaption { font-size: 0.78rem; color: var(--muted); margin-top: 0.6rem; text-align: center; line-height: 1.5; }
 
 /* ── Sections ──────────────────────────────────── */
 section { padding: 5rem 0; border-bottom: 1px solid var(--border); }
@@ -80,19 +85,10 @@ section:last-of-type { border-bottom: none; }
 .env-card .name { font-weight: 700; font-size: 0.9rem; }
 .env-card .desc { font-size: 0.78rem; color: var(--muted); margin-top: 0.2rem; line-height: 1.45; }
 
-/* ── Leaderboard ───────────────────────────────── */
-.leaderboard { width: 100%; }
-.lb-header { display: grid; grid-template-columns: 180px 80px 1fr 80px 1fr 80px; gap: 0 0.5rem; padding: 0.6rem 0; border-bottom: 2px solid var(--foreground); font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
-.lb-row { display: grid; grid-template-columns: 180px 80px 1fr 80px 1fr 80px; gap: 0 0.5rem; padding: 0.7rem 0; border-bottom: 1px solid var(--border); align-items: center; font-size: 0.88rem; transition: background 150ms; }
-.lb-row:hover { background: rgba(0,0,0,0.015); }
-.lb-model { font-weight: 600; }
-.lb-val { font-variant-numeric: tabular-nums; font-weight: 500; text-align: right; font-size: 0.85rem; }
-.lb-ci { font-size: 0.7rem; color: var(--muted); font-weight: 400; }
-.lb-bar-wrap { position: relative; height: 20px; background: rgba(0,0,0,0.03); border-radius: 3px; overflow: hidden; }
-.lb-bar { height: 100%; border-radius: 3px; transition: width 400ms ease; }
-.bar-tsr { background: var(--accent); opacity: 0.7; }
-.bar-uar { background: var(--danger); opacity: 0.7; }
-.lb-scr { font-variant-numeric: tabular-nums; font-weight: 500; text-align: right; font-size: 0.85rem; }
+/* ── Figure ────────────────────────────────────── */
+.fig { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin: 2rem 0; }
+.fig img { width: 100%; border-radius: 4px; display: block; }
+.fig figcaption { font-size: 0.8rem; color: var(--muted); margin-top: 0.75rem; text-align: center; line-height: 1.5; }
 
 /* ── Findings ──────────────────────────────────── */
 .findings-list { list-style: none; }
@@ -115,16 +111,11 @@ section:last-of-type { border-bottom: none; }
 .news-text { line-height: 1.55; }
 .news-text strong { font-weight: 600; }
 
-/* ── Figure ────────────────────────────────────── */
-.fig { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin: 2rem 0; }
-.fig img { width: 100%; border-radius: 4px; display: block; }
-.fig figcaption { font-size: 0.8rem; color: var(--muted); margin-top: 0.75rem; text-align: center; line-height: 1.5; }
-
 /* ── Resources ─────────────────────────────────── */
 .res-grid { display: flex; gap: 0.75rem; flex-wrap: wrap; }
-.res-card { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--card); border: 1px solid var(--border); padding: 0.6rem 1.2rem; border-radius: var(--radius); font-weight: 600; font-size: 0.85rem; text-decoration: none; transition: border-color 150ms; }
+.res-card { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--card); border: 1px solid var(--border); padding: 0.6rem 1.2rem; border-radius: 999px; font-weight: 600; font-size: 0.85rem; text-decoration: none; transition: border-color 150ms; }
 .res-card:hover { border-color: var(--foreground); }
-.res-card svg { width: 16px; height: 16px; }
+.res-card svg { width: 15px; height: 15px; }
 
 /* ── Footer ────────────────────────────────────── */
 footer { padding: 2.5rem 0; font-size: 0.82rem; color: var(--muted); text-align: center; border-top: 1px solid var(--border); }
@@ -133,55 +124,56 @@ footer a { color: var(--muted); }
 /* ── Responsive ────────────────────────────────── */
 @media (max-width: 900px) {
   .env-grid { grid-template-columns: repeat(3, 1fr); }
-  .lb-header, .lb-row { grid-template-columns: 140px 60px 1fr 60px 1fr 60px; }
 }
 @media (max-width: 640px) {
-  .hero h1 { font-size: 2rem; }
+  .hero h1 { font-size: 1.8rem; }
   .env-grid { grid-template-columns: repeat(2, 1fr); }
   .bh-grid { grid-template-columns: 1fr; }
   .stat-row { gap: 0.5rem; }
-  .stat-pill { font-size: 0.75rem; padding: 0.3rem 0.8rem; }
-  .lb-header, .lb-row { font-size: 0.78rem; grid-template-columns: 110px 50px 1fr 50px 1fr 50px; }
-  nav .links { gap: 0.75rem; }
-  nav .links a { font-size: 0.78rem; }
+  .stat-pill { font-size: 0.72rem; padding: 0.3rem 0.7rem; }
+  .nav-pill .nav-links a { font-size: 0.75rem; padding: 0.3rem 0.5rem; }
+  .nav-pill { padding: 0.4rem 0.4rem 0.4rem 1rem; }
 }
 @media (max-width: 480px) {
   .env-grid { grid-template-columns: 1fr; }
+  .nav-pill .nav-links a.hide-mobile { display: none; }
 }
 </style>
 </head>
 <body>
 
-<!-- Nav -->
-<nav>
-  <div class="container inner">
+<!-- Pill Nav -->
+<div class="nav-outer">
+  <nav class="nav-pill">
     <a class="logo" href="#">ClawsBench</a>
-    <div class="links">
+    <div class="nav-links">
       <a href="#overview">Overview</a>
-      <a href="#environments">Environments</a>
+      <a href="#environments" class="hide-mobile">Environments</a>
       <a href="#results">Results</a>
-      <a href="#findings">Findings</a>
-      <a href="#behaviors">Behaviors</a>
+      <a href="#findings" class="hide-mobile">Findings</a>
+      <a href="#behaviors" class="hide-mobile">Behaviors</a>
       <a href="#news">News</a>
-      <a class="gh-btn" href="https://github.com/benchflow-ai/ClawsBench" target="_blank">
-        <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-        GitHub
+      <a class="icon-btn" href="https://arxiv.org/abs/2604.05172" target="_blank" title="Paper">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M4 0a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V4.414A2 2 0 0013.414 3L11 .586A2 2 0 009.586 0H4zm5 1.5v2A1.5 1.5 0 0010.5 5H13v9a.5.5 0 01-.5.5h-9A.5.5 0 013 14V2a.5.5 0 01.5-.5H9z"/></svg>
+      </a>
+      <a class="icon-btn" href="https://github.com/benchflow-ai/ClawsBench" target="_blank" title="GitHub">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
       </a>
     </div>
-  </div>
-</nav>
+  </nav>
+</div>
 
 <!-- Hero -->
 <div class="hero">
   <div class="hero-grid"></div>
   <div class="hero-fade"></div>
   <div class="hero-content">
-    <h1>ClawsBench: Benchmarking How Well LLM Agents Work Across Realistic Productivity Tasks</h1>
-    <p class="tagline">The first evaluation framework measuring both <strong>capability</strong> and <strong>safety</strong> of LLM agents in high-fidelity simulated workspaces &mdash; Gmail, Calendar, Docs, Drive, and Slack.</p>
+    <h1>ClawsBench: Evaluating Capability and Safety of LLM Productivity Agents</h1>
+    <p class="tagline">High-fidelity simulated workspaces for rigorous agent evaluation &mdash; Gmail, Calendar, Docs, Drive, and Slack.</p>
     <div class="cta">
-      <a href="#results" class="btn-primary">See Leaderboard</a>
-      <a href="https://arxiv.org/abs/2604.05172" class="btn-secondary" target="_blank">Read the Paper</a>
-      <a href="https://github.com/benchflow-ai/ClawsBench" class="btn-secondary">
+      <a href="https://arxiv.org/abs/2604.05172" class="btn-primary" target="_blank">Read the Paper</a>
+      <a href="#results" class="btn-secondary">See Results</a>
+      <a href="https://github.com/benchflow-ai/ClawsBench" class="btn-secondary" target="_blank">
         <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
         GitHub
       </a>
@@ -194,6 +186,10 @@ footer a { color: var(--muted); }
       <div class="stat-pill"><strong>7,224</strong> <span>Trials</span></div>
     </div>
   </div>
+  <figure class="hero-fig">
+    <img src="assets/fig1_pipeline.png" alt="ClawsBench evaluation pipeline">
+    <figcaption>ClawsBench evaluation pipeline: tasks execute in Docker containers with mock services, sandboxed agent execution, and deterministic state management.</figcaption>
+  </figure>
 </div>
 
 <div class="container">
@@ -208,10 +204,6 @@ footer a { color: var(--muted); }
     <p style="margin-bottom:1rem;"><strong>ClawsBench</strong> addresses this with five high-fidelity mock services that replicate real Google Workspace and Slack APIs with full state management and deterministic snapshot/restore. Our 44 structured tasks cover single-service, cross-service, and safety-critical scenarios, enabling rigorous evaluation of both what agents <em>can</em> do and what they <em>should not</em> do.</p>
     <p>We decompose agent scaffolding into two independent levers &mdash; <strong>domain skills</strong> (API knowledge via progressive disclosure) and a <strong>meta prompt</strong> (cross-service coordination) &mdash; and vary both to measure their separate and combined effects across 6 models, 4 agent harnesses, and 33 experimental conditions.</p>
   </div>
-  <figure class="fig">
-    <img src="assets/fig1_pipeline.png" alt="ClawsBench evaluation pipeline">
-    <figcaption><strong>Figure 1.</strong> ClawsBench evaluation pipeline: tasks are executed in Docker containers with mock services, sandboxed agent execution, and deterministic state management.</figcaption>
-  </figure>
 </section>
 
 <!-- Environments -->
@@ -223,116 +215,36 @@ footer a { color: var(--muted); }
   <div class="env-grid">
     <div class="env-card">
       <img src="assets/gmail_img.png" alt="Gmail" loading="lazy">
-      <div class="info">
-        <div class="name">claw-gmail</div>
-        <div class="desc">54 endpoints, ~3,000 seeded emails with needles and edge cases</div>
-      </div>
+      <div class="info"><div class="name">claw-gmail</div><div class="desc">54 endpoints, ~3,000 seeded emails with needles and edge cases</div></div>
     </div>
     <div class="env-card">
       <img src="assets/gcal_img.jpg" alt="Google Calendar" loading="lazy">
-      <div class="info">
-        <div class="name">claw-gcal</div>
-        <div class="desc">Full Calendar API mock with recurring events and timezone handling</div>
-      </div>
+      <div class="info"><div class="name">claw-gcal</div><div class="desc">Full Calendar API mock with recurring events and timezone handling</div></div>
     </div>
     <div class="env-card">
       <img src="assets/gdoc_img.png" alt="Google Docs" loading="lazy">
-      <div class="info">
-        <div class="name">claw-gdocs</div>
-        <div class="desc">Document CRUD with collaborative editing semantics</div>
-      </div>
+      <div class="info"><div class="name">claw-gdocs</div><div class="desc">Document CRUD with collaborative editing semantics</div></div>
     </div>
     <div class="env-card">
       <img src="assets/gdrive_img.png" alt="Google Drive" loading="lazy">
-      <div class="info">
-        <div class="name">claw-gdrive</div>
-        <div class="desc">File management with sharing permissions and access control</div>
-      </div>
+      <div class="info"><div class="name">claw-gdrive</div><div class="desc">File management with sharing permissions and access control</div></div>
     </div>
     <div class="env-card">
       <img src="assets/slack_img.jpg" alt="Slack" loading="lazy">
-      <div class="info">
-        <div class="name">claw-slack</div>
-        <div class="desc">42 endpoints covering channels, threads, reactions, and DMs</div>
-      </div>
+      <div class="info"><div class="name">claw-slack</div><div class="desc">42 endpoints covering channels, threads, reactions, and DMs</div></div>
     </div>
   </div>
 </section>
 
-<!-- Results / Leaderboard -->
+<!-- Results -->
 <section id="results">
   <div class="section-header">
     <h2>Agent Performance</h2>
-    <p>All models evaluated on OpenClaw with full scaffolding (skills + meta prompt). Sorted by Task Success Rate. 95% cluster bootstrap CIs shown.</p>
+    <p>All models evaluated on OpenClaw with full scaffolding (skills + meta prompt). TSR = Task Success Rate, UAR = Unsafe Action Rate. 95% cluster bootstrap CIs.</p>
   </div>
-
-  <div class="leaderboard">
-    <div class="lb-header">
-      <div>Model</div>
-      <div style="text-align:right">TSR</div>
-      <div></div>
-      <div style="text-align:right">UAR</div>
-      <div></div>
-      <div style="text-align:right">SCR</div>
-    </div>
-    <div class="lb-row">
-      <div class="lb-model">Claude Opus 4.6</div>
-      <div class="lb-val">63% <span class="lb-ci">[42,82]</span></div>
-      <div class="lb-bar-wrap"><div class="lb-bar bar-tsr" style="width:100%"></div></div>
-      <div class="lb-val">23% <span class="lb-ci">[8,40]</span></div>
-      <div class="lb-bar-wrap"><div class="lb-bar bar-uar" style="width:69.7%"></div></div>
-      <div class="lb-scr">50%</div>
-    </div>
-    <div class="lb-row">
-      <div class="lb-model">GLM-5</div>
-      <div class="lb-val">60% <span class="lb-ci">[41,78]</span></div>
-      <div class="lb-bar-wrap"><div class="lb-bar bar-tsr" style="width:95.2%"></div></div>
-      <div class="lb-val">23% <span class="lb-ci">[10,38]</span></div>
-      <div class="lb-bar-wrap"><div class="lb-bar bar-uar" style="width:69.7%"></div></div>
-      <div class="lb-scr">48%</div>
-    </div>
-    <div class="lb-row">
-      <div class="lb-model">Gemini 3.1 Pro</div>
-      <div class="lb-val">58% <span class="lb-ci">[38,77]</span></div>
-      <div class="lb-bar-wrap"><div class="lb-bar bar-tsr" style="width:92.1%"></div></div>
-      <div class="lb-val">10% <span class="lb-ci">[3,19]</span></div>
-      <div class="lb-bar-wrap"><div class="lb-bar bar-uar" style="width:30.3%"></div></div>
-      <div class="lb-scr">48%</div>
-    </div>
-    <div class="lb-row">
-      <div class="lb-model">Claude Sonnet 4.6</div>
-      <div class="lb-val">56% <span class="lb-ci">[36,75]</span></div>
-      <div class="lb-bar-wrap"><div class="lb-bar bar-tsr" style="width:88.9%"></div></div>
-      <div class="lb-val">13% <span class="lb-ci">[3,27]</span></div>
-      <div class="lb-bar-wrap"><div class="lb-bar bar-uar" style="width:39.4%"></div></div>
-      <div class="lb-scr">48%</div>
-    </div>
-    <div class="lb-row">
-      <div class="lb-model">GPT-5.4</div>
-      <div class="lb-val">53% <span class="lb-ci">[34,72]</span></div>
-      <div class="lb-bar-wrap"><div class="lb-bar bar-tsr" style="width:84.1%"></div></div>
-      <div class="lb-val">7% <span class="lb-ci">[0,15]</span></div>
-      <div class="lb-bar-wrap"><div class="lb-bar bar-uar" style="width:21.2%"></div></div>
-      <div class="lb-scr">41%</div>
-    </div>
-    <div class="lb-row">
-      <div class="lb-model">Gemini 3.1 Flash-Lite</div>
-      <div class="lb-val">39% <span class="lb-ci">[21,57]</span></div>
-      <div class="lb-bar-wrap"><div class="lb-bar bar-tsr" style="width:61.9%"></div></div>
-      <div class="lb-val">23% <span class="lb-ci">[11,35]</span></div>
-      <div class="lb-bar-wrap"><div class="lb-bar bar-uar" style="width:69.7%"></div></div>
-      <div class="lb-scr">26%</div>
-    </div>
-  </div>
-
-  <div style="display:flex; gap:1.5rem; margin-top:0.75rem; font-size:0.75rem; color:var(--muted);">
-    <span><span style="display:inline-block;width:12px;height:12px;background:var(--accent);opacity:0.7;border-radius:2px;vertical-align:middle;margin-right:4px;"></span> TSR &mdash; Task Success Rate (higher is better)</span>
-    <span><span style="display:inline-block;width:12px;height:12px;background:var(--danger);opacity:0.7;border-radius:2px;vertical-align:middle;margin-right:4px;"></span> UAR &mdash; Unsafe Action Rate (lower is better)</span>
-  </div>
-
-  <figure class="fig">
-    <img src="assets/fig_main_results.png" alt="Main results figure">
-    <figcaption><strong>Figure 2.</strong> TSR and UAR for six models on OpenClaw with full scaffolding. The top five models cluster at 53&ndash;63% TSR; only Flash-Lite trails. Capability and safety rankings diverge.</figcaption>
+  <figure class="fig" style="margin-top:0;">
+    <img src="assets/fig_main_results.png" alt="Main results: TSR and UAR for six models on OpenClaw with full scaffolding">
+    <figcaption><strong>Figure 2.</strong> TSR (left) and UAR (right) for six models on OpenClaw with full scaffolding. The top five models cluster at 53&ndash;63% TSR; only Flash-Lite trails. Capability and safety rankings diverge: Opus leads TSR (63%) but ties for highest UAR (23%).</figcaption>
   </figure>
 </section>
 
@@ -463,10 +375,10 @@ footer a { color: var(--muted); }
       Paper (arXiv)
     </a>
     <a class="res-card" href="https://github.com/benchflow-ai/ClawsBench" target="_blank">
-      <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
       GitHub
     </a>
-    <a class="res-card" href="#">
+    <a class="res-card" href="#" target="_blank">
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M13.545 2.907a13.227 13.227 0 00-3.257-1.011.05.05 0 00-.052.025c-.141.25-.297.577-.406.833a12.19 12.19 0 00-3.658 0 8.258 8.258 0 00-.412-.833.051.051 0 00-.052-.025c-1.125.194-2.22.534-3.257 1.011a.041.041 0 00-.021.018C.356 6.024-.213 9.047.066 12.032c.001.014.01.028.021.037a13.276 13.276 0 003.995 2.02.05.05 0 00.056-.019c.308-.42.582-.863.818-1.329a.05.05 0 00-.028-.07 8.748 8.748 0 01-1.248-.595.05.05 0 01-.005-.084c.084-.063.168-.129.248-.195a.05.05 0 01.051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 01.053.007c.08.066.164.132.248.195a.05.05 0 01-.004.085c-.399.233-.813.44-1.249.594a.05.05 0 00-.027.07c.24.465.515.909.817 1.329a.05.05 0 00.056.019 13.235 13.235 0 004.001-2.02.049.049 0 00.021-.037c.334-3.451-.559-6.449-2.366-9.106a.034.034 0 00-.02-.019z"/></svg>
       Discord
     </a>
