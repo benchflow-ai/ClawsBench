@@ -54,12 +54,9 @@ a:hover { color: var(--muted); }
 /* ── Pill Nav ──────────────────────────────────── */
 .nav-outer { position: sticky; top: 0; z-index: 50; padding: 1.25rem 1.5rem 0; }
 .nav-pill { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; background: var(--card); border: 1px solid var(--border); border-radius: 999px; padding: 0.45rem 0.5rem 0.45rem 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
-.nav-pill .brand { flex: none; display: flex; align-items: center; gap: 0.6rem; }
-.nav-pill .brand-mark { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--foreground); text-decoration: none; transition: opacity 150ms; }
+.nav-pill .brand-mark { flex: none; display: inline-flex; align-items: center; gap: 0.5rem; color: var(--foreground); text-decoration: none; transition: opacity 150ms; }
 .nav-pill .brand-mark:hover { opacity: 0.55; }
-.nav-pill .brand-name { font-weight: 600; font-size: 0.95rem; letter-spacing: -0.01em; white-space: nowrap; }
-.nav-pill .brand-sep { flex: none; width: 1px; height: 15px; background: var(--border); }
-.nav-pill .logo { flex: none; font-weight: 900; font-size: 1rem; text-decoration: none; color: var(--foreground); letter-spacing: -0.02em; white-space: nowrap; }
+.nav-pill .brand-name { font-weight: 900; font-size: 1rem; letter-spacing: -0.02em; white-space: nowrap; }
 /* The links absorb any squeeze and scroll rather than pushing the pill off-screen. */
 .nav-pill .nav-links { display: flex; align-items: center; gap: 0.25rem; min-width: 0; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
 .nav-pill .nav-links::-webkit-scrollbar { display: none; }
@@ -166,9 +163,6 @@ footer a { color: var(--muted); }
 @media (max-width: 480px) {
   .env-grid { grid-template-columns: 1fr; }
   .nav-pill .nav-links a.hide-mobile { display: none; }
-  /* Tight quarters: keep both wordmarks, tighten the lockup. */
-  .nav-pill .brand { gap: 0.45rem; }
-  .nav-pill .brand-name { font-size: 0.9rem; }
 }
 </style>
 </head>
@@ -177,11 +171,7 @@ footer a { color: var(--muted); }
 <!-- Pill Nav -->
 <div class="nav-outer">
   <nav class="nav-pill">
-    <div class="brand">
-      <a class="brand-mark" href="https://benchflow.ai" title="BenchFlow"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 514 512" fill="currentColor" style="vertical-align:-3px;"><path fill-rule="evenodd" clip-rule="evenodd" d="M445.422 66.4597L511.882 0L389.022 293.965L295.129 387.859L0 511.882L69.3042 442.577L81.0101 454.283L89.0554 446.238L77.3493 434.532L130.65 381.232L162.469 413.051L170.514 405.006L138.695 373.187L191.995 319.887L203.701 331.593L211.746 323.547L200.04 311.841L253.34 258.541L285.16 290.36L293.205 282.315L261.386 250.496L314.686 197.196L326.392 208.902L334.437 200.856L322.731 189.15L376.031 135.85L407.851 167.669L415.896 159.624L384.077 127.805L437.377 74.5049L449.083 86.2108L457.128 78.1656L445.422 66.4597ZM399.127 389.865V299.369L513.197 26.4333V503.935L399.127 389.865ZM391.061 397.931L505.132 512.001H29.1594L300.605 397.931H391.061Z"/></svg><span class="brand-name">BenchFlow</span></a>
-      <span class="brand-sep" aria-hidden="true"></span>
-      <a class="logo" href="/">ClawsBench</a>
-    </div>
+    <a class="brand-mark" href="https://benchflow.ai" title="BenchFlow"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 514 512" fill="currentColor" style="vertical-align:-3px;"><path fill-rule="evenodd" clip-rule="evenodd" d="M445.422 66.4597L511.882 0L389.022 293.965L295.129 387.859L0 511.882L69.3042 442.577L81.0101 454.283L89.0554 446.238L77.3493 434.532L130.65 381.232L162.469 413.051L170.514 405.006L138.695 373.187L191.995 319.887L203.701 331.593L211.746 323.547L200.04 311.841L253.34 258.541L285.16 290.36L293.205 282.315L261.386 250.496L314.686 197.196L326.392 208.902L334.437 200.856L322.731 189.15L376.031 135.85L407.851 167.669L415.896 159.624L384.077 127.805L437.377 74.5049L449.083 86.2108L457.128 78.1656L445.422 66.4597ZM399.127 389.865V299.369L513.197 26.4333V503.935L399.127 389.865ZM391.061 397.931L505.132 512.001H29.1594L300.605 397.931H391.061Z"/></svg><span class="brand-name">BenchFlow</span></a>
     <div class="nav-links">
       <a href="#overview">Overview</a>
       <a href="#environments" class="hide-mobile">Environments</a>
